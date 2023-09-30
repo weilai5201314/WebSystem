@@ -18,3 +18,23 @@
 2023-09-30T15:39:19.508814Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
 2023-09-30T15:39:19.537760Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
 2023-09-30T15:39:19.537858Z 0 [System] [MY-010931] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: ready for connections. Version: '8.0.32'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-09-30T15:44:39.596217Z 0 [System] [MY-013105] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Normal shutdown.
+2023-09-30T15:44:40.866100Z 0 [System] [MY-010910] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Shutdown complete (mysqld 8.0.32)  MySQL Community Server - GPL.
+2023-09-30T15:44:43.236394Z 0 [System] [MY-010116] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld (mysqld 8.0.32) starting as process 14680
+2023-09-30T15:44:43.258521Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-09-30T15:44:43.487223Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-09-30T15:44:43.676396Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-09-30T15:44:43.676810Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-09-30T15:44:43.706446Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-09-30T15:44:43.706541Z 0 [System] [MY-010931] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: ready for connections. Version: '8.0.32'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-09-30T15:45:16.997439Z 10 [Warning] [MY-013360] [Server] Plugin sha256_password reported: ''sha256_password' is deprecated and will be removed in a future release. Please use caching_sha2_password instead'
+2023-09-30T15:48:11.052234Z 15 [Warning] [MY-013360] [Server] Plugin sha256_password reported: ''sha256_password' is deprecated and will be removed in a future release. Please use caching_sha2_password instead'
+2023-09-30T15:48:51.649387Z 0 [System] [MY-013105] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Normal shutdown.
+2023-09-30T15:48:52.482523Z 0 [System] [MY-010910] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Shutdown complete (mysqld 8.0.32)  MySQL Community Server - GPL.
+2023-09-30T15:48:53.259835Z 0 [System] [MY-010116] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld (mysqld 8.0.32) starting as process 24364
+2023-09-30T15:48:53.284128Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-09-30T15:48:53.510264Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-09-30T15:48:53.691331Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-09-30T15:48:53.691680Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-09-30T15:48:53.719012Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-09-30T15:48:53.719071Z 0 [System] [MY-010931] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: ready for connections. Version: '8.0.32'  socket: ''  port: 3306  MySQL Community Server - GPL.
