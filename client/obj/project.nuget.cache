@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bgb66g31EyvvK/rHW5AFODFEmGabTEgEswiDOZED4+Dt1erPMNCYkLMT/wTrrT02sQIqOrFLlfR0nM7t+lfBOw==",
+  "dgSpecHash": "MohaA7Q0UnXp8iJG1WzcTJamVP9/hMVU8P4Vr202znv6druyg7qBrHAPDAqvyNIZmkdWOio1nLhoJAYUd47XLA==",
   "success": true,
-  "projectFilePath": "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\client\\client.csproj",
+  "projectFilePath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

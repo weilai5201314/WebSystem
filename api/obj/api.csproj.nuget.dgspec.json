@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\api\\api.csproj": {}
+    "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\api.csproj": {}
   },
   "projects": {
-    "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\api\\api.csproj": {
+    "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\api\\api.csproj",
+        "projectUniqueName": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\api\\api.csproj",
+        "projectPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\api.csproj",
         "packagesPath": "C:\\Users\\w2001\\.nuget\\packages\\",
-        "outputPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\api\\obj\\",
+        "outputPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Dependence\\Visual_Studio\\Shared\\NuGetPackages"
@@ -49,6 +49,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.7, )"
+            },
+            "MySql.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.5, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

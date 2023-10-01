@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\client\\client.csproj",
+      "projectUniqueName": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj",
       "projectName": "client",
-      "projectPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\client\\client.csproj",
+      "projectPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj",
       "packagesPath": "C:\\Users\\w2001\\.nuget\\packages\\",
-      "outputPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem_Alter\\client\\obj\\",
+      "outputPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Dependence\\Visual_Studio\\Shared\\NuGetPackages"
