@@ -17,8 +17,7 @@
 
 
 
-    <ItemGroup>
-      <Folder Include="src\" />
-    </ItemGroup>
+
+
 
 </Project>
