@@ -20,11 +20,6 @@ namespace server.Controllers.User
     {
         // private readonly MysqlDbContext _context2; // 注入数据库上下文
         // private readonly IConfiguration _configuration2; // 注入配置
-        [FromServices]
-        public MysqlDbContext DbContext { get; set; }
-
-        [FromServices]
-        public IConfiguration Configuration { get; set; }
 
         // public Api(MysqlDbContext context, IServiceProvider serviceProvider)
         // {
@@ -32,6 +27,10 @@ namespace server.Controllers.User
         //     _configuration2 = serviceProvider.GetRequiredService<IConfiguration>();
         // }
 
+        // 构造注入
+        [FromServices] public MysqlDbContext DbContext { get; set; }
+
+        [FromServices] public IConfiguration Configuration { get; set; }
 
         [HttpPost("LogIn")]
         public IActionResult LogIn([FromBody] LogInRequest request)
@@ -45,17 +44,23 @@ namespace server.Controllers.User
                 return BadRequest("Invalid username or password");
             }
 
-            // 验证密码
-            if (PasswordHelper.VerifyPassword(request.Password, user.Salt, user.Pass))
+            // 判断账号状态，只有 2 正常
+            if (user.Status == 2)
             {
-                // 密码验证通过，创建 JWT Token
-                var token = GenerateJwtToken(user);
+                // 验证密码
+                if (PasswordHelper.VerifyPassword(request.Password, user.Salt, user.Pass))
+                {
+                    // 密码验证通过，创建 JWT Token
+                    var token = GenerateJwtToken(user);
 
-                // 返回成功登录的响应，包括 Token
-                return Ok(new { token });
+                    // 返回成功登录的响应，包括 Token
+                    return Ok(new { token });
+                }
+
+                return BadRequest("Invalid username or password");
             }
 
-            return BadRequest("Invalid username or password");
+            return BadRequest("请等待管理审核。");
         }
 
         private string GenerateJwtToken(server.Mysql.Models.User user)

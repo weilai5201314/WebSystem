@@ -14,8 +14,10 @@ namespace server.Controllers.User
         // {
         //     _context = context; // 注入数据库上下文
         // }
-        [FromServices] // 使用属性注入
-        public MysqlDbContext _context { get; set; }
+        
+        // 使用属性注入
+        [FromServices] 
+        public MysqlDbContext SignUp_context { get; set; }
 
         [HttpPost("SignUp")]
         public IActionResult SignUp([FromBody] SignUpRequest request)
@@ -32,7 +34,7 @@ namespace server.Controllers.User
             }
 
             // 判断是否已经注册
-            if (_context.User.Any(u => u.Account == request.Account))
+            if (SignUp_context.User.Any(u => u.Account == request.Account))
             {
                 return BadRequest("Username already exists.");
             }
@@ -46,14 +48,15 @@ namespace server.Controllers.User
                 Account = request.Account,
                 Pass = hash,
                 Salt = salt,
-                Status = 0
+                Status = 0,
+                RevertPass = new byte[256]
             };
 
             // 将新用户添加到数据库
-            _context.User.Add(newUser);
-            _context.SaveChanges();
+            SignUp_context.User.Add(newUser);
+            SignUp_context.SaveChanges();
 
-            return Ok("User registered successfully");
+            return Ok("注册成功，等待管理审核。");
         }
     }
 
