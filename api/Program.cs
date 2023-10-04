@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.Extensions.Configuration;
 using server.Mysql.Data;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server.Mysql.Models;
-// using Microsoft.Extensions.Configuration;
 
 namespace server.Mysql.Data
 {
