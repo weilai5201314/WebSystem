@@ -7,9 +7,9 @@ namespace server.Controllers.User
     [Route("api/[controller]")]
     public class Mysql : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly MysqlDbContext _context;
 
-        public Mysql(ApplicationDbContext context)
+        public Mysql(MysqlDbContext context)
         {
             _context = context;
         }

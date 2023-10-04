@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 // 添加配置
 builder.Configuration.AddJsonFile("appsettings.json", optional: false);
 // 添加数据库上下文
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<MysqlDbContext>(options =>
 {
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
 });

@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using server.HashEncry;
-using server.Mysql.Data; // 导入数据库上下文
+using server.Mysql.Data;
+using System.ComponentModel.DataAnnotations; // 导入数据注解命名空间
 
 namespace server.Controllers.User
 {
     public partial class Api
     {
-        private readonly ApplicationDbContext _context; // 注入数据库上下文
+        private readonly MysqlDbContext _context; // 注入数据库上下文
 
-        public Api(ApplicationDbContext context)
+        public Api(MysqlDbContext context)
         {
             _context = context; // 注入数据库上下文
         }
@@ -16,9 +17,20 @@ namespace server.Controllers.User
         [HttpPost("SignUp")]
         public IActionResult SignUp([FromBody] SignUpRequest request)
         {
-            if (_context.User.Any(u => u.Account == request.Username))
+            // 使用数据注解进行输入验证
+            // 检测非法输入
+            var validationContext = new ValidationContext(request, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(request, validationContext, validationResults,
+                    validateAllProperties: true))
             {
-                // 用户已存在，返回错误消息
+                // 如果验证失败，返回错误消息
+                return BadRequest(validationResults.Select(r => r.ErrorMessage));
+            }
+
+            // 判断是否已经注册
+            if (_context.User.Any(u => u.Account == request.Account))
+            {
                 return BadRequest("Username already exists.");
             }
 
@@ -28,9 +40,9 @@ namespace server.Controllers.User
             // 创建一个新的用户实体
             var newUser = new server.Mysql.Models.User
             {
-                Account = request.Username,
-                Pass = hash, // 存储哈希密码
-                Salt = salt, // 存储盐值
+                Account = request.Account,
+                Pass = hash,
+                Salt = salt,
                 Status = 0
             };
 
@@ -38,15 +50,21 @@ namespace server.Controllers.User
             _context.User.Add(newUser);
             _context.SaveChanges();
 
-            // 返回一个成功注册的 Ok 响应
             return Ok("User registered successfully");
         }
     }
 
-    // 用户注册请求模型
     public class SignUpRequest
     {
-        public string Username { get; set; }
+        [Required(ErrorMessage = "Account is required.")]
+        [RegularExpression("^[a-zA-Z0-9]{1,20}$", ErrorMessage = "账号只能是20位以内的数字或者字母.")]
+        public string Account { get; set; }
+
+        // 添加输入检测限制
+        [Required(ErrorMessage = "Password is required.")]
+        [RegularExpression("^[a-zA-Z0-9!@#$%^&*()_+\\-=[\\]{};:'\\\",<.>/?]+$",
+            ErrorMessage =
+                "Password must be alphanumeric and may include special characters. It should be less than or equal to 30 characters.")]
         public string Password { get; set; }
     }
 }
