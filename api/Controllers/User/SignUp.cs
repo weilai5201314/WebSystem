@@ -7,12 +7,15 @@ namespace server.Controllers.User
 {
     public partial class Api
     {
-        private readonly MysqlDbContext _context; // 注入数据库上下文
-
-        public Api(MysqlDbContext context)
-        {
-            _context = context; // 注入数据库上下文
-        }
+        // private readonly MysqlDbContext _context; // 注入数据库上下文
+        //
+        // // public MysqlDbContext _context;
+        // public Api(MysqlDbContext context)
+        // {
+        //     _context = context; // 注入数据库上下文
+        // }
+        [FromServices] // 使用属性注入
+        public MysqlDbContext _context { get; set; }
 
         [HttpPost("SignUp")]
         public IActionResult SignUp([FromBody] SignUpRequest request)

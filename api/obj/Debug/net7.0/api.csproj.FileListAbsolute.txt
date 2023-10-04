@@ -46,6 +46,10 @@ D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.AspNetCore.O
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.OpenApi.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\MySql.Data.dll
@@ -56,6 +60,7 @@ D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Swashbuckle.AspNetCore
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\System.Drawing.Common.dll
+D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\System.Security.Permissions.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\System.Windows.Extensions.dll
