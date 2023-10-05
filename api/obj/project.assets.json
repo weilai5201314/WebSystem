@@ -305,7 +305,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Primitives/7.0.0": {
+      "Microsoft.Extensions.Primitives/8.0.0-rc.1.23419.4": {
         "type": "package",
         "compile": {
           "lib/net7.0/Microsoft.Extensions.Primitives.dll": {
@@ -1629,10 +1629,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Primitives/7.0.0": {
-      "sha512": "um1KU5kxcRp3CNuI8o/GrZtD4AIOXDk+RLsytjZ9QPok3ttLUelLKpilVPuaFT3TFjOhSibUAso0odbOaCDj3Q==",
+    "Microsoft.Extensions.Primitives/8.0.0-rc.1.23419.4": {
+      "sha512": "zyoB4zblhvpylS9VOmKyBuGH+RjKDsfi0cTB2KRPPDD6tFinpP+vGr3dictaNYLhGUg6jaBmq+2H/WZMCnvGDQ==",
       "type": "package",
-      "path": "microsoft.extensions.primitives/7.0.0",
+      "path": "microsoft.extensions.primitives/8.0.0-rc.1.23419.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1649,9 +1649,11 @@
         "lib/net6.0/Microsoft.Extensions.Primitives.xml",
         "lib/net7.0/Microsoft.Extensions.Primitives.dll",
         "lib/net7.0/Microsoft.Extensions.Primitives.xml",
+        "lib/net8.0/Microsoft.Extensions.Primitives.dll",
+        "lib/net8.0/Microsoft.Extensions.Primitives.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.xml",
-        "microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+        "microsoft.extensions.primitives.8.0.0-rc.1.23419.4.nupkg.sha512",
         "microsoft.extensions.primitives.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3040,6 +3042,7 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "Microsoft.AspNetCore.OpenApi >= 7.0.7",
+      "Microsoft.Extensions.Primitives >= 8.0.0-rc.1.23419.4",
       "MySql.EntityFrameworkCore >= 7.0.5",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "System.IdentityModel.Tokens.Jwt >= 7.0.2"
@@ -3094,6 +3097,10 @@
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[7.0.7, )"
+          },
+          "Microsoft.Extensions.Primitives": {
+            "target": "Package",
+            "version": "[8.0.0-rc.1.23419.4, )"
           },
           "MySql.EntityFrameworkCore": {
             "target": "Package",

@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[7.0.7, )"
             },
+            "Microsoft.Extensions.Primitives": {
+              "target": "Package",
+              "version": "[8.0.0-rc.1.23419.4, )"
+            },
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.5, )"

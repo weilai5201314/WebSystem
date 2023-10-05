@@ -46,6 +46,7 @@ D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.AspNetCore.O
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\zzz\school\InfoSecurity\WebSystem\api\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll

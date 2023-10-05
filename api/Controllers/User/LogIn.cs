@@ -18,14 +18,7 @@ namespace server.Controllers.User
 {
     public partial class Api
     {
-        // private readonly MysqlDbContext _context2; // 注入数据库上下文
-        // private readonly IConfiguration _configuration2; // 注入配置
-
-        // public Api(MysqlDbContext context, IServiceProvider serviceProvider)
-        // {
-        //     _context2 = context;
-        //     _configuration2 = serviceProvider.GetRequiredService<IConfiguration>();
-        // }
+        
 
         // 构造注入
         [FromServices] public MysqlDbContext DbContext { get; set; }
