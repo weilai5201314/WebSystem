@@ -43,13 +43,19 @@ app.MapControllers();
 // JWT验证方法
 app.Use(async (context, next) =>
 {
-    // / 检查请求路径，如果是登录请求则不进行验证
-    //  所有 Post 请求都加密，除了特定页面
-    if ( context.Request.Method != "POST" ||
-         context.Request.Path == "/Api/user/SignUp" ||  // 注册
-         context.Request.Path == "/Api/user/LogIn" ||   // 登录
-         context.Request.Path == "/Api/user/RevertPass"     // 找回密码
-         )
+    // 如果是 GET 请求，则不进行验证
+    if (context.Request.Method == "GET")
+    {
+        await next.Invoke();
+        return;
+    }
+
+
+    var path = context.Request.Path.Value;
+    // if ((path == "/Api/user/SignUp" || path == "/Api/user/LogIn" || path == "/Api/user/RevertPass") && (context.Request.Method == "POST" || context.Request.Method == "PUT"))
+
+    // 测试专用判断条件
+    if (path != "/Api")
     {
         await next.Invoke();
         return;
@@ -59,7 +65,7 @@ app.Use(async (context, next) =>
     if (context.Request.Headers.TryGetValue("Authorization", out StringValues authHeader))
     {
         var token = authHeader.FirstOrDefault()?.Split(" ").Last(); // 获取 JWT Token
-        var jwtSettingsKey = builder.Configuration["JwtSettings:Key"];// 获取密钥
+        var jwtSettingsKey = builder.Configuration["JwtSettings:Key"]; // 获取密钥
         if (!string.IsNullOrEmpty(token))
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -68,7 +74,6 @@ app.Use(async (context, next) =>
                 // 验证 JWT Token，需要提供相应的密钥和验证参数
                 var validationParameters = new TokenValidationParameters
                 {
-                    
                     // 设置密钥
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettingsKey)),
