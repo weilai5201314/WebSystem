@@ -26,4 +26,24 @@
         public int UserID { get; set; }
         public int UserGroupID { get; set; }
     }
+
+    // Log 表
+    public class Log
+    {
+        public int ID { get; set; }
+
+        public DateTime Timestamp { get; set; }
+
+        public string User { get; set; }
+
+        public string Action { get; set; }
+
+        public bool InputResult { get; set; }
+
+        public string InputValue { get; set; }
+
+        public bool ReturnResult { get; set; }
+
+        public string ReturnValue { get; set; }
+    }
 }

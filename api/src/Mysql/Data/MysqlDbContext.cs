@@ -18,6 +18,7 @@ namespace server.Mysql.Data
         public DbSet<User> User { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<UserUsergroup> UserUsergroup { get; set; }
+        public DbSet<Log> Log { get; set; }
 
         // OnConfiguring 方法，用于配置数据库连接
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

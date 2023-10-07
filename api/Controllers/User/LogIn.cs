@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using server.HashEncry;
 using server.Mysql.Data;
-// using server.Mysql.Models;
+using server.Mysql.Models;
 // using System.Linq; // 导入 LINQ 查询命名空间
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,6 +25,7 @@ namespace server.Controllers.User
 
         [FromServices] public IConfiguration Configuration { get; set; }
 
+        
         [HttpPost("LogIn")]
         public IActionResult LogIn([FromBody] LogInRequest request)
         {
@@ -34,6 +35,8 @@ namespace server.Controllers.User
             // 检查用户是否存在
             if (user == null)
             {
+                // 记录登录失败的日志
+                LogLogin(user.ID, request.Account, false,"Invalid username or password");
                 return BadRequest("Invalid username or password");
             }
 
@@ -46,15 +49,43 @@ namespace server.Controllers.User
                     // 密码验证通过，创建 JWT Token
                     var token = GenerateJwtToken(user);
 
+                    // 记录登录成功的日志
+                    LogLogin(user.ID, request.Account, true,token);
+
                     // 返回成功登录的响应，包括 Token
                     return Ok(new { token });
                 }
 
+                // 记录登录失败的日志
+                LogLogin(user.ID, request.Account, false,"Invalid username or password");
                 return BadRequest("Invalid username or password");
             }
 
+            // 记录登录失败的日志
+            LogLogin(user.ID, request.Account, false,"请等待管理审核。");
             return BadRequest("请等待管理审核。");
         }
+
+// 添加记录登录操作的日志函数
+        private void LogLogin(int userId, string userName, bool success,string returnvalue)
+        {
+            // 创建日志实体
+            var log = new Log
+            {
+                Timestamp = DateTime.UtcNow,
+                User = userName,
+                Action = "Login",
+                InputResult = success,
+                InputValue = $"UserID: {userId}, UserName: {userName}, Success: {success}",
+                ReturnResult = success,
+                ReturnValue = returnvalue // 这里可以记录生成的 Token 或错误消息
+            };
+
+            // 将日志实体添加到数据库中
+            DbContext.Log.Add(log);
+            DbContext.SaveChanges();
+        }
+
 
         private string GenerateJwtToken(server.Mysql.Models.User user)
         {
