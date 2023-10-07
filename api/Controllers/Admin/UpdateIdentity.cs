@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using server.Mysql.Data; // 导入数据注解命名空间
+using server.Mysql.Data;
+using server.Mysql.Models; // 导入数据注解命名空间
 
 // 导入数据注解命名空间
 
@@ -11,67 +12,107 @@ public partial class Api
     [HttpPut("UpdateIdentity")]
     public IActionResult UpdateIdentity([FromBody] UpdateIdentityRequest request)
     {
-        //避免参数过多
-        if (request.AddUserGroupIds.Count == 2 && request.RemoveUserGroupIds.Count == 2)
-            return BadRequest("参数过多");
-
-        // 判断增加还是删除
-        if (request.AddUserGroupIds.Count == 2)
+        // 判断是否有行为
+        if (request.HasAction)
         {
-            int userID = request.AddUserGroupIds[0];
-            int groupID = request.AddUserGroupIds[1];
+            if (2 <= request.IdentityId && request.IdentityId <= 5)
+            {
+                string adminAccount = request.AdminAccount;
+                string userAccount = request.UserAccount;
+                int identityId = request.IdentityId;
+                int action = request.Action;
+                //判断AdminID 是否有效
+                int AdminID = GetUserIdByAccount(adminAccount);
+                if (AdminID != -1)
+                {
+                    // 开始判断管理员权限
+                    bool validIdentity = CheckUserIdentity(AdminID);
+                    if (validIdentity)
+                    {
+                        // 从user表先获取ID
+                        int userId = GetUserIdByAccount(userAccount);
+                        // 增加
+                        if (action == 1)
+                        {
+                            return AddIdentityToUser(userId, identityId);
+                            ;
+                        }
+                        // 删除
+                        else if (action == 2)
+                        {
+                            return RemoveIdentityFromUser(userId, identityId);
+                        }
+                    }
+                    return Unauthorized("Can't find your identity.");
+                }
 
-            // 执行相应的操作，使用 firstUserGroupId 和 secondUserGroupId 进行处理
-            return Ok("add function");
+                return Ok("No such Admin.");
+            }
+
+            return Ok("No such identity.");
         }
 
-        if (request.RemoveUserGroupIds.Count == 2)
-        {
-            int userID = request.RemoveUserGroupIds[0];
-            int groupID = request.RemoveUserGroupIds[1];
-            // 处理请求参数不足两个数的情况
-            return Ok("bad function");
-        }
-        else
-            return BadRequest("参数至少应包含两个数。");
+        return Ok("No action specified.");
     }
 
-    // 验证管理员账号是否有效
-    private bool IsValidAdmin(string adminAccount)
-    {
-        // 实现验证管理员账号的逻辑，例如从数据库中验证
-        // 如果有效，返回 true，否则返回 false
-        return true;
-    }
-
-    // 验证用户账号是否有效
-    private bool IsValidUser(string userAccount)
-    {
-        // 实现验证用户账号的逻辑，例如从数据库中验证
-        // 如果有效，返回 true，否则返回 false
-        return true;
-    }
 
     // 添加身份
-    private bool AddIdentityToUser(string userAccount)
+    private IActionResult AddIdentityToUser(int userId, int identityId)
     {
         // 实现添加身份的逻辑，例如向数据库中添加身份信息
         // 如果成功，返回 true，否则返回 false
-        return true;
+        // / 检查用户是否已关联要添加的身份组
+        bool userHasIdentity = ShowinfoContext.UserUsergroup
+            .Any(ug => ug.UserID == userId && ug.UserGroupID == identityId);
+
+        if (!userHasIdentity)
+        {
+            // 用户没有关联要添加的身份组，执行添加操作
+            var newUserUsergroup = new UserUsergroup
+            {
+                UserID = userId,
+                UserGroupID = identityId
+            };
+
+            ShowinfoContext.UserUsergroup.Add(newUserUsergroup);
+            ShowinfoContext.SaveChanges();
+
+            return Ok("Identity added successfully.");
+        }
+
+        return BadRequest("User already has this identity.");
     }
 
     // 删除身份
-    private bool RemoveIdentityFromUser(string userAccount)
+    private IActionResult RemoveIdentityFromUser(int userId, int identityId)
     {
         // 实现删除身份的逻辑，例如从数据库中删除身份信息
         // 如果成功，返回 true，否则返回 false
-        return true;
+        // 检查用户是否已关联要删除的身份组
+        var userUsergroup = ShowinfoContext.UserUsergroup
+            .FirstOrDefault(ug => ug.UserID == userId && ug.UserGroupID == identityId);
+
+        if (userUsergroup != null)
+        {
+            // 用户已关联要删除的身份组，执行删除操作
+            ShowinfoContext.UserUsergroup.Remove(userUsergroup);
+            ShowinfoContext.SaveChanges();
+            return Ok("Identity removed successfully.");
+        }
+
+        return BadRequest("User does not have this identity.");
     }
+
 
     public class UpdateIdentityRequest
     {
-        public int UserId { get; set; } // 要操作的用户的ID
-        public List<int> AddUserGroupIds { get; set; } // 要添加的用户组ID列表
-        public List<int> RemoveUserGroupIds { get; set; } // 要删除的用户组ID列表
+        public string AdminAccount { get; set; } // 管理员账号
+        public string UserAccount { get; set; } // 用户账号
+        public int IdentityId { get; set; } // 身份ID
+        public int Action { get; set; } = 0; // 默认为 0，表示不执行任何操作
+        // 1为添加，2为删除
+
+        // 可选参数 Action
+        public bool HasAction => Action != 0; //判断是否有参数
     }
 }

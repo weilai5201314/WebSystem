@@ -62,7 +62,7 @@ public partial class Api
         return -1; // 返回-1表示未找到用户或账号无效
     }
 
-    // 检测身份组
+    // 检测管理员身份组
     // 需要用户的ID
     private bool CheckUserIdentity(int userId)
     {
