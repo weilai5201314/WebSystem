@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using server.Mysql.Data; // 导入数据注解命名空间
+using server.Mysql.Models; // 导入Log实体类所在的命名空间
 
 // 导入数据注解命名空间
 
@@ -10,7 +11,6 @@ public partial class Api
 {
     // 构造注入
     [FromServices] public MysqlDbContext ShowinfoContext { get; set; }
-
 
     [HttpPost("ShowInfo")]
     public IActionResult ShowInfo([FromBody] ShowInfoRequest request)
@@ -27,8 +27,7 @@ public partial class Api
 
             if (validIdentity)
             {
-                // 用户有有效的身份，可以执行后续功能
-                // 逻辑判断的正式通过，ShowInfo页面的所有业务功能从这开始/逻辑判断的正式通过，ShowInfo页面的所有业务功能从这开始/逻辑判断的正式通过，ShowInfo页面的所有业务功能从这开始/逻辑判断的正式通过，ShowInfo页面的所有业务功能从这开始
+                // 逻辑判断的正式通过，ShowInfo页面的所有业务功能从这开始
 
                 // 开始查看user表的所有信息
                 var userinfo = ShowinfoContext.User.Select(u => new
@@ -36,17 +35,45 @@ public partial class Api
                     u.Account,
                     u.Status
                 }).ToList();
-
+                // 记录操作日志
+                LogShowInfo(request.Account, true, request.Account, "返回了User表的用户信息。");
                 // 返回所有user信息
                 return Ok(userinfo);
-                // return Ok("User has a valid identity. Proceed with the functionality.");
             }
+
+            // 记录操作失败的日志
+            LogShowInfo(request.Account, false, request.Account, "Can't find your identity.");
 
             return Unauthorized("Can't find your identity.");
         }
 
+        // 记录操作失败的日志
+        LogShowInfo(request.Account, false, request.Account,
+            "User does not have a valid identity or the account is invalid.");
+
         return Unauthorized("User does not have a valid identity or the account is invalid.");
     }
+
+    // 添加记录操作日志的函数
+    private void LogShowInfo(string userName, bool success, string inputvalue, string returnvalue)
+    {
+        // 创建日志实体
+        var log = new Log
+        {
+            Timestamp = DateTime.UtcNow,
+            User = userName,
+            Action = "ShowInfo",
+            InputResult = success,
+            InputValue = $"UserName: {userName}, Input: {inputvalue}",
+            ReturnResult = success,
+            ReturnValue = returnvalue // 这里可以记录操作成功的消息或返回的数据
+        };
+
+        // 将日志实体添加到数据库中
+        ShowinfoContext.Log.Add(log);
+        ShowinfoContext.SaveChanges();
+    }
+
 
     // 通过账号获取ID 从User表
     private int GetUserIdByAccount(string account)
@@ -91,6 +118,3 @@ public partial class Api
         public string Account { get; set; }
     }
 }
-
-
-// curl -X POST "http://localhost:5009/Api/admin/ShowInfo" -H "Authorization: Bearer <your_jwt_token_here>" -v

@@ -32,27 +32,69 @@ public partial class Api
                         // 从user表先获取ID
                         int userId = GetUserIdByAccount(userAccount);
                         // 增加
+                        // 在 UpdateIdentity 方法中
                         if (action == 1)
                         {
-                            return AddIdentityToUser(userId, identityId);
-                            ;
+                            var result = AddIdentityToUser(userId, identityId);
+                            var success = result is OkObjectResult;
+                            string logMessage = success ? "Identity added successfully." : "Failed to add identity.";
+                            LogUpdateIdentity(request.AdminAccount, request.UserAccount, identityId, action, success,
+                                logMessage);
+                            return result;
                         }
-                        // 删除
                         else if (action == 2)
                         {
-                            return RemoveIdentityFromUser(userId, identityId);
+                            var result = RemoveIdentityFromUser(userId, identityId);
+                            var success = result is OkObjectResult;
+                            string logMessage = success ? "Identity added successfully." : "Failed to add identity.";
+                            LogUpdateIdentity(request.AdminAccount, request.UserAccount, identityId, action, success,
+                                logMessage);
+                            return result;
                         }
                     }
+
+                    LogUpdateIdentity(request.AdminAccount, request.UserAccount, identityId, action, false,
+                        "Can't find your identity.");
                     return Unauthorized("Can't find your identity.");
                 }
 
+                LogUpdateIdentity(request.AdminAccount, request.UserAccount, identityId, action, false,
+                    "No such Admin.");
                 return Ok("No such Admin.");
             }
 
+            LogUpdateIdentity(request.AdminAccount, request.UserAccount, request.IdentityId, request.Action, false,
+                "No such identity.");
             return Ok("No such identity.");
         }
 
+
+        LogUpdateIdentity(request.AdminAccount, request.UserAccount, request.IdentityId, request.Action, false,
+            "No action specified.");
         return Ok("No action specified.");
+    }
+
+    // 添加记录操作日志的函数
+    // 修改 LogUpdateIdentity 函数，接收 IActionResult 作为参数
+    private void LogUpdateIdentity(string adminAccount, string userAccount, int identityId, int action,
+        bool success, string message)
+    {
+        // 创建日志实体
+        var log = new Log
+        {
+            Timestamp = DateTime.UtcNow,
+            User = adminAccount, // 记录管理员账号
+            Action = "UpdateIdentity", // 记录操作名称
+            InputResult = success,
+            InputValue =
+                $"AdminAccount: {adminAccount}, UserAccount: {userAccount}, IdentityId: {identityId}, Action: {action}",
+            ReturnResult = success,
+            ReturnValue = message // 这里可以记录操作成功的消息或返回的数据
+        };
+
+        // 将日志实体添加到数据库中
+        ShowinfoContext.Log.Add(log);
+        ShowinfoContext.SaveChanges();
     }
 
 
