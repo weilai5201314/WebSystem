@@ -2,23 +2,16 @@
 using server.HashEncry;
 using server.Mysql.Data;
 using System.ComponentModel.DataAnnotations; // 导入数据注解命名空间
+using server.Mysql.Models; // 导入Log实体类所在的命名空间
 
 namespace server.Controllers.User
 {
     public partial class Api
     {
-        // private readonly MysqlDbContext _context; // 注入数据库上下文
-        //
-        // // public MysqlDbContext _context;
-        // public Api(MysqlDbContext context)
-        // {
-        //     _context = context; // 注入数据库上下文
-        // }
-        
         // 使用属性注入
-        [FromServices] 
-        public MysqlDbContext SignUp_context { get; set; }
+        [FromServices] public MysqlDbContext SignUp_context { get; set; }
 
+        
         [HttpPost("SignUp")]
         public IActionResult SignUp([FromBody] SignUpRequest request)
         {
@@ -30,12 +23,15 @@ namespace server.Controllers.User
                     validateAllProperties: true))
             {
                 // 如果验证失败，返回错误消息
+                LogSignUp(request.Account, false,$"{request.Account} {request.Password}", "非法输入。");
                 return BadRequest(validationResults.Select(r => r.ErrorMessage));
             }
 
             // 判断是否已经注册
             if (SignUp_context.User.Any(u => u.Account == request.Account))
             {
+                // 记录注册失败的日志
+                LogSignUp(request.Account, false,$"{request.Account} {request.Password}", "Username already exists.");
                 return BadRequest("Username already exists.");
             }
 
@@ -56,7 +52,30 @@ namespace server.Controllers.User
             SignUp_context.User.Add(newUser);
             SignUp_context.SaveChanges();
 
+            // 记录注册成功的日志
+            LogSignUp(request.Account, true,$"{request.Account} {request.Password}", "注册成功，等待管理审核。");
+
             return Ok("注册成功，等待管理审核。");
+        }
+
+// 添加记录注册操作的日志函数
+        private void LogSignUp(string userName, bool success,string input, string message)
+        {
+            // 创建日志实体
+            var log = new Log
+            {
+                Timestamp = DateTime.UtcNow,
+                User = userName,
+                Action = "SignUp",
+                InputResult = success,
+                InputValue = $"UserName: {userName}, Input:{input}",
+                ReturnResult = success,
+                ReturnValue = message // 这里可以记录注册成功的消息或 Token
+            };
+
+            // 将日志实体添加到数据库中
+            SignUp_context.Log.Add(log);
+            SignUp_context.SaveChanges();
         }
     }
 

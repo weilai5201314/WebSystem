@@ -2,13 +2,14 @@
 using server.HashEncry;
 using server.Mysql.Data;
 using System.ComponentModel.DataAnnotations; // 导入数据注解命名空间
+using server.Mysql.Models; // 导入Log实体类所在的命名空间
 
 namespace server.Controllers.User;
 
 public partial class Api
 {
     [FromServices] public MysqlDbContext RevertPass_Context { get; set; }
-
+    
     [HttpPost("RevertPass")]
     public IActionResult RevertPass([FromBody] RevertPassRequest request)
     {
@@ -19,6 +20,7 @@ public partial class Api
                 validateAllProperties: true))
         {
             // 如果验证失败，返回错误消息
+            LogRevertPass(request.Account,false,$"{request.Account} {request.Password}","提交成功，等待管理审核。");
             return BadRequest(validationResults.Select(r => r.ErrorMessage));
         }
 
@@ -29,16 +31,41 @@ public partial class Api
         // 检查用户是否存在
         if (user == null)
         {
+            // 记录提交找回密码失败的日志
+            LogRevertPass(request.Account, false,$"{request.Account} {request.Password}","提交成功，等待管理审核。");
             return BadRequest("Invalid username or password");
         }
 
-        // 使用 PasswordHelper 类的 HashPassword方法生哈希密码
+        // 使用 PasswordHelper 类的 HashPassword 方法生成哈希密码
         var hash = PasswordHelper.HashPassword(request.Password, user.Salt);
         user.RevertPass = hash;
         user.Status = 3; // 3 待审核
         RevertPass_Context.SaveChanges();
 
+        // 记录提交找回密码成功的日志
+        LogRevertPass(request.Account, true,$"{request.Account} {request.Password}","提交成功，等待管理审核。");
+
         return Ok("提交成功，等待管理审核。");
+    }
+
+// 添加记录提交找回密码操作的日志函数
+    private void LogRevertPass(string userName, bool success,string inputvalue,string returnvalue)
+    {
+        // 创建日志实体
+        var log = new Log
+        {
+            Timestamp = DateTime.UtcNow,
+            User = userName,
+            Action = "RevertPass",
+            InputResult = success,
+            InputValue = $"UserName: {userName}, Input: {inputvalue}",
+            ReturnResult = success,
+            ReturnValue = returnvalue // 这里可以记录提交找回密码成功的消息或 Token
+        };
+
+        // 将日志实体添加到数据库中
+        RevertPass_Context.Log.Add(log);
+        RevertPass_Context.SaveChanges();
     }
 
 

@@ -18,14 +18,12 @@ namespace server.Controllers.User
 {
     public partial class Api
     {
-        
-
-        // 构造注入
+        // 构造注入数据库结构
         [FromServices] public MysqlDbContext DbContext { get; set; }
 
         [FromServices] public IConfiguration Configuration { get; set; }
 
-        
+
         [HttpPost("LogIn")]
         public IActionResult LogIn([FromBody] LogInRequest request)
         {
@@ -36,7 +34,7 @@ namespace server.Controllers.User
             if (user == null)
             {
                 // 记录登录失败的日志
-                LogLogin(user.ID, request.Account, false,"Invalid username or password");
+                LogLogin(user.ID, request.Account, false, "Invalid username or password");
                 return BadRequest("Invalid username or password");
             }
 
@@ -50,24 +48,24 @@ namespace server.Controllers.User
                     var token = GenerateJwtToken(user);
 
                     // 记录登录成功的日志
-                    LogLogin(user.ID, request.Account, true,token);
+                    LogLogin(user.ID, request.Account, true, token);
 
                     // 返回成功登录的响应，包括 Token
                     return Ok(new { token });
                 }
 
                 // 记录登录失败的日志
-                LogLogin(user.ID, request.Account, false,"Invalid username or password");
+                LogLogin(user.ID, request.Account, false, "Invalid username or password");
                 return BadRequest("Invalid username or password");
             }
 
             // 记录登录失败的日志
-            LogLogin(user.ID, request.Account, false,"请等待管理审核。");
+            LogLogin(user.ID, request.Account, false, "请等待管理审核。");
             return BadRequest("请等待管理审核。");
         }
 
-// 添加记录登录操作的日志函数
-        private void LogLogin(int userId, string userName, bool success,string returnvalue)
+        // 添加记录登录操作的日志函数
+        private void LogLogin(int userId, string userName, bool success, string returnvalue)
         {
             // 创建日志实体
             var log = new Log
