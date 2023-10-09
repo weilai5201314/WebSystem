@@ -148,9 +148,16 @@ public partial class Api
 
     public class UpdateIdentityRequest
     {
+        [Required(ErrorMessage = "Account is required.")]
+        [RegularExpression("^[a-zA-Z0-9]{1,20}$", ErrorMessage = "账号只能是20位以内的数字或者字母.")]
         public string AdminAccount { get; set; } // 管理员账号
+
+        [Required(ErrorMessage = "Account is required.")]
+        [RegularExpression("^[a-zA-Z0-9]{1,20}$", ErrorMessage = "账号只能是20位以内的数字或者字母.")]
         public string UserAccount { get; set; } // 用户账号
+
         public int IdentityId { get; set; } // 身份ID
+
         public int Action { get; set; } = 0; // 默认为 0，表示不执行任何操作
         // 1为添加，2为删除
 
