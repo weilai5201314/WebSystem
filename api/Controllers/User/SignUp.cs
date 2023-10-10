@@ -2,7 +2,8 @@
 using server.HashEncry;
 using server.Mysql.Data;
 using System.ComponentModel.DataAnnotations; // 导入数据注解命名空间
-using server.Mysql.Models; // 导入Log实体类所在的命名空间
+using server.Mysql.Models;
+using server.Time; // 导入Log实体类所在的命名空间
 
 namespace server.Controllers.User
 {
@@ -61,10 +62,11 @@ namespace server.Controllers.User
 // 添加记录注册操作的日志函数
         private void LogSignUp(string userName, bool success,string input, string message)
         {
+            DateTime cstTime = TimeHelper.BeijingTime;
             // 创建日志实体
             var log = new Log
             {
-                Timestamp = DateTime.UtcNow,
+                Timestamp = cstTime,
                 User = userName,
                 Action = "SignUp",
                 InputResult = success,

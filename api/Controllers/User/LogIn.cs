@@ -7,12 +7,8 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-// using Microsoft.Extensions.Configuration;
-// using System;
-// using Microsoft.AspNetCore.Mvc;
-// using server.HashEncry;
-// using server.Mysql.Data;
-using System.ComponentModel.DataAnnotations; // 导入数据注解命名空间
+using System.ComponentModel.DataAnnotations;
+using server.Time; // 导入数据注解命名空间
 
 namespace server.Controllers.User
 {
@@ -67,10 +63,11 @@ namespace server.Controllers.User
         // 添加记录登录操作的日志函数
         private void LogLogin(int userId, string userName, bool success, string returnvalue)
         {
+            DateTime cstTime = TimeHelper.BeijingTime;
             // 创建日志实体
             var log = new Log
             {
-                Timestamp = DateTime.UtcNow,
+                Timestamp = cstTime,
                 User = userName,
                 Action = "Login",
                 InputResult = success,

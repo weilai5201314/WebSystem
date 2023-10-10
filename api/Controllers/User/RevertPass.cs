@@ -2,7 +2,8 @@
 using server.HashEncry;
 using server.Mysql.Data;
 using System.ComponentModel.DataAnnotations; // 导入数据注解命名空间
-using server.Mysql.Models; // 导入Log实体类所在的命名空间
+using server.Mysql.Models;
+using server.Time; // 导入Log实体类所在的命名空间
 
 namespace server.Controllers.User;
 
@@ -51,10 +52,11 @@ public partial class Api
 // 添加记录提交找回密码操作的日志函数
     private void LogRevertPass(string userName, bool success,string inputvalue,string returnvalue)
     {
+        DateTime cstTime = TimeHelper.BeijingTime;
         // 创建日志实体
         var log = new Log
         {
-            Timestamp = DateTime.UtcNow,
+            Timestamp = cstTime,
             User = userName,
             Action = "RevertPass",
             InputResult = success,

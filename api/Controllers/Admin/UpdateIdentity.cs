@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using server.Mysql.Data;
-using server.Mysql.Models; // 导入数据注解命名空间
+using server.Mysql.Models;
+using server.Time; // 导入数据注解命名空间
 
 // 导入数据注解命名空间
 
@@ -79,10 +79,12 @@ public partial class Api
     private void LogUpdateIdentity(string adminAccount, string userAccount, int identityId, int action,
         bool success, string message)
     {
+        DateTime cstTime = TimeHelper.BeijingTime;
+
         // 创建日志实体
         var log = new Log
         {
-            Timestamp = DateTime.UtcNow,
+            Timestamp = cstTime,
             User = adminAccount, // 记录管理员账号
             Action = "UpdateIdentity", // 记录操作名称
             InputResult = success,

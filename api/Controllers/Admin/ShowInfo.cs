@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using server.Mysql.Data; // 导入数据注解命名空间
-using server.Mysql.Models; // 导入Log实体类所在的命名空间
+using server.Mysql.Models;
+using server.Time; // 导入Log实体类所在的命名空间
 
 // 导入数据注解命名空间
 
@@ -57,10 +58,12 @@ public partial class Api
     // 添加记录操作日志的函数
     private void LogShowInfo(string userName, bool success, string inputvalue, string returnvalue)
     {
+        DateTime cstTime = TimeHelper.BeijingTime;
+
         // 创建日志实体
         var log = new Log
         {
-            Timestamp = DateTime.UtcNow,
+            Timestamp = cstTime,
             User = userName,
             Action = "ShowInfo",
             InputResult = success,

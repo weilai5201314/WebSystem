@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using server.Mysql.Data;
-using server.Mysql.Models; // 导入数据注解命名空间
+using server.Mysql.Models;
+using server.Time; // 导入数据注解命名空间
 
 // 导入数据注解命名空间
 
@@ -63,10 +64,11 @@ public partial class Api
     // 添加记录操作日志的函数
     private void LogStatus(string adminAccount, string userAccount, int status, bool success, string message)
     {
+        DateTime cstTime = TimeHelper.BeijingTime;
         // 创建日志实体
         var log = new Log
         {
-            Timestamp = DateTime.UtcNow,
+            Timestamp = cstTime,
             User = adminAccount, // 记录管理员账号
             Action = "UpdateStatus", // 记录操作名称
             InputResult = success,
