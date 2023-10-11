@@ -1,8 +1,5 @@
-﻿using System;
-using System.Windows.Controls;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -65,6 +62,7 @@ public partial class LogIn : Window
             // 发起 POST 请求
             var response = client.PostAsync("http://localhost:5009/Api/user/LogIn", content).Result;
 
+            // 判断网络状态码
             if (response.IsSuccessStatusCode)
             {
                 // 登录成功
@@ -72,10 +70,13 @@ public partial class LogIn : Window
 
                 try
                 {
+                    // 解析json相应
                     var jsonResponse = JsonConvert.DeserializeObject<JObject>(responseContent);
                     if (jsonResponse.ContainsKey("token"))
                     {
-                        TokenManager.LogInToken = jsonResponse["token"].Value<string>();
+                        // 赋值token给全局变量 LogInToken
+                        UserInfoAll.UserAccount = usaccount;
+                        UserInfoAll.LogInToken = jsonResponse["token"].Value<string>();
                         return true; // 登录成功
                     }
                     else
@@ -90,24 +91,25 @@ public partial class LogIn : Window
                     // 无法解析 JSON，表示登录失败
                     // var errorResponse = response.Content.ReadAsStringAsync().Result;
                     // MessageBox.Show(errorResponse, "登录失败");
-                    MessageBox.Show( "登录失败");
+                    MessageBox.Show("登录失败");
                     return false;
                 }
             }
             else
             {
                 // 处理请求失败的情况
-                var errorResponse = response.Content.ReadAsStringAsync().Result;
-                MessageBox.Show(errorResponse, "登录失败");
-                // MessageBox.Show( "登录失败");
+                // var errorResponse = response.Content.ReadAsStringAsync().Result;
+                // MessageBox.Show(errorResponse, "登录失败");
+                MessageBox.Show("登录失败");
                 return false;
             }
         }
     }
 
-    // 全局静态token
-    public static class TokenManager
+    // 全局用户信息
+    public static class UserInfoAll
     {
+        public static string UserAccount { get; set; }
         public static string LogInToken { get; set; }
     }
 }

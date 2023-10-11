@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:client.user"
         mc:Ignorable="d"
         Title="LogIn" Height="450" Width="500"
         Background="Bisque">
@@ -117,7 +116,7 @@
             <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
             <!-- 功能按钮类 -->
             <Button Content="登录" Style="{StaticResource CustomButtonStyle}" Width="120" Height="50"
-                    Canvas.Left="195" Canvas.Top="260" Click="ToLogIn"  />
+                    Canvas.Left="195" Canvas.Top="260" Click="ToLogIn" />
 
             <Button Content="前往注册" Style="{StaticResource CustomButtonStyle3}" Width="120" Height="50"
                     Canvas.Left="260" Canvas.Top="330" />
