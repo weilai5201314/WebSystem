@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 D:\zzz\school\InfoSecurity\WebSystem\client\App.xaml
-11407045341
+62112949998
 
-3-1233169557
-1981871740104
-MainWindow.xaml;
+8-1598158841
+199-144125273
+src\admin\ShowDaily.xaml;src\admin\ShowInfo.xaml;src\MainWindow.xaml;src\user\LogIn.xaml;src\user\RevertPass.xaml;src\user\SignUp.xaml;
 
 False
 

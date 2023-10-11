@@ -35,10 +35,14 @@ namespace server.Controllers.User
             }
 
             // 判断账号状态，只有 2 正常
-            if (user.Status == 2)
+            // if (user.Status == 2) 
+            // 判断密码是否正确
+            if (PasswordHelper.VerifyPassword(request.Password, user.Salt, user.Pass))
             {
                 // 验证密码
-                if (PasswordHelper.VerifyPassword(request.Password, user.Salt, user.Pass))
+                // if (PasswordHelper.VerifyPassword(request.Password, user.Salt, user.Pass))
+                // 判断状态能否登录
+                if (user.Status == 2)
                 {
                     // 密码验证通过，创建 JWT Token
                     var token = GenerateJwtToken(user);
@@ -50,14 +54,19 @@ namespace server.Controllers.User
                     return Ok(new { token });
                 }
 
+                // // 记录登录失败的日志
+                // LogLogin(user.ID, request.Account, false, "Invalid username or password");
+                // return BadRequest("Invalid username or password");
                 // 记录登录失败的日志
-                LogLogin(user.ID, request.Account, false, "Invalid username or password");
-                return BadRequest("Invalid username or password");
+                LogLogin(user.ID, request.Account, false, "请等待管理审核。");
+                return BadRequest("请等待管理审核。");
             }
 
-            // 记录登录失败的日志
-            LogLogin(user.ID, request.Account, false, "请等待管理审核。");
-            return BadRequest("请等待管理审核。");
+            LogLogin(user.ID, request.Account, false, "Invalid username or password");
+            return BadRequest("Invalid username or password");
+            // // 记录登录失败的日志
+            // LogLogin(user.ID, request.Account, false, "请等待管理审核。");
+            // return BadRequest("请等待管理审核。");
         }
 
         // 添加记录登录操作的日志函数

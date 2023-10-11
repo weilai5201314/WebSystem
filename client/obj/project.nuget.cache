@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "MohaA7Q0UnXp8iJG1WzcTJamVP9/hMVU8P4Vr202znv6druyg7qBrHAPDAqvyNIZmkdWOio1nLhoJAYUd47XLA==",
+  "dgSpecHash": "xUAsO7m6Uh1db3zqHI1CuOSZSBh4Nm53ClL9eOnwtdPZC8zUwjX889wsrCS/M5dcxf2o7IJ36Iy9gwDv2d/26g==",
   "success": true,
   "projectFilePath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\w2001\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
