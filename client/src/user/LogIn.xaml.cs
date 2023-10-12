@@ -82,25 +82,26 @@ public partial class LogIn : Window
                     else
                     {
                         // 服务器返回的 JSON 中没有 token，表示登录失败
-                        MessageBox.Show("登录失败");
+                        var errorResponse = response.Content.ReadAsStringAsync().Result;
+                        MessageBox.Show(errorResponse, "登录失败");
                         return false;
                     }
                 }
                 catch (JsonReaderException)
                 {
                     // 无法解析 JSON，表示登录失败
-                    // var errorResponse = response.Content.ReadAsStringAsync().Result;
-                    // MessageBox.Show(errorResponse, "登录失败");
-                    MessageBox.Show("登录失败");
+                    var errorResponse = response.Content.ReadAsStringAsync().Result;
+                    MessageBox.Show(errorResponse, "登录失败");
+                    // MessageBox.Show("登录失败");
                     return false;
                 }
             }
             else
             {
                 // 处理请求失败的情况
-                // var errorResponse = response.Content.ReadAsStringAsync().Result;
-                // MessageBox.Show(errorResponse, "登录失败");
-                MessageBox.Show("登录失败");
+                var errorResponse = response.Content.ReadAsStringAsync().Result;
+                MessageBox.Show(errorResponse, "登录失败");
+                // MessageBox.Show("登录失败");
                 return false;
             }
         }

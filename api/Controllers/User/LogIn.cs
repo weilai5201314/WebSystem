@@ -23,15 +23,14 @@ namespace server.Controllers.User
         [HttpPost("LogIn")]
         public IActionResult LogIn([FromBody] LogInRequest request)
         {
-            // 根据用户名从数据库中查找用户
+            
             var user = DbContext.User.FirstOrDefault(u => u.Account == request.Account);
 
-            // 检查用户是否存在
             if (user == null)
             {
-                // 记录登录失败的日志
-                LogLogin(user.ID, request.Account, false, "Invalid username or password");
-                return BadRequest("Invalid username or password");
+                // 用户不存在，记录登录失败的日志
+                LogLogin(0, request.Account, false, "Invalid username ");
+                return BadRequest("Invalid username ");
             }
 
             // 判断账号状态，只有 2 正常
@@ -62,8 +61,8 @@ namespace server.Controllers.User
                 return BadRequest("请等待管理审核。");
             }
 
-            LogLogin(user.ID, request.Account, false, "Invalid username or password");
-            return BadRequest("Invalid username or password");
+            LogLogin(user.ID, request.Account, false, "Invalid  password");
+            return BadRequest("Invalid  password");
             // // 记录登录失败的日志
             // LogLogin(user.ID, request.Account, false, "请等待管理审核。");
             // return BadRequest("请等待管理审核。");
