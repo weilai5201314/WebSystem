@@ -48,7 +48,7 @@ namespace server.Controllers.Admin
             // 创建日志实体
             var log = new Log
             {
-                                
+                Timestamp = cstTime,            
                 User = adminAccount, // 记录管理员账号
                 Action = "DeleteUser", // 记录操作名称
                 InputResult = success,

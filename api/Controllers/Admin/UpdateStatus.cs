@@ -31,6 +31,14 @@ public partial class Api
                 var user = DbContext.User.FirstOrDefault(u => u.ID == userId);
                 if (user != null)
                 {
+                    //  再次判断状态，如果原始状态为3，且新状态为2，则同步覆盖新密码
+                    if (user.Status == 3 && request.NewStatus == 2)
+                        user.Pass = user.RevertPass;
+                    //  同时还需要判断是不是注册人员，如果初始状态为 0 ，则要同步增加普通用户身份组
+                    if (user.Status == 0 && request.NewStatus == 2)
+                        AddIdentityToUser(user.ID, 2);
+                    
+                    // 开始修改状态
                     user.Status = request.NewStatus;
                     DbContext.SaveChanges();
 
