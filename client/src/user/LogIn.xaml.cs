@@ -1,33 +1,96 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using System.IO;
+using System.Text.Json;
+using client.config.time;
 
 namespace client.user;
 
 public partial class LogIn : Window
 {
+    private const string ConfigFilePath = "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\src\\config\\LogIn.json"; // JSON 配置文件路径
+
     public LogIn()
     {
         InitializeComponent();
     }
 
+    private LoginConfig ReadConfig()
+    {
+        if (File.Exists(ConfigFilePath))
+        {
+            string json = File.ReadAllText(ConfigFilePath);
+            return System.Text.Json.JsonSerializer.Deserialize<LoginConfig>(json); // 使用 System.Text.Json
+        }
 
+        return new LoginConfig();
+    }
+
+    // 写入 JSON 配置文件
+    private void WriteConfig(LoginConfig config)
+    {
+        string json = System.Text.Json.JsonSerializer.Serialize(config); // 使用 System.Text.Json
+        File.WriteAllText(ConfigFilePath, json);
+    }
+
+    // 登录函数，带登录失败次数限制和锁定时间
     private void ToLogIn(object sender, RoutedEventArgs e)
     {
-        bool result = LogToGetToken(Account.Text, Password.Text);
+        var config = ReadConfig();
+        DateTime cstTime = TimeHelper.BeijingTime;
+        if (config.LockoutEndUtc.HasValue && config.LockoutEndUtc > cstTime)
+        {
+            // 用户被锁定，不能登录
+            MessageBox.Show($"登录已被锁定，请稍后再试。", "登录失败");
+            return;
+        }
+
+        bool result = LogToGetToken(Account.Text, Password.Password);
         if (result)
         {
-            // 登录成功，去新页面，存储token
+            // 登录成功，重置登录失败次数和锁定时间
+            config.FailedLoginAttempts = 0;
+            config.LockoutEndUtc = null;
+            WriteConfig(config);
+
+            // 登录成功，去新页面，存储 token
             Jump_Mainwindos();
         }
         else
         {
-            Password.Text = "";
+            // 登录失败，增加登录失败次数
+            config.FailedLoginAttempts++;
+
+            if (config.FailedLoginAttempts >= config.MaxLoginAttempts)
+            {
+                // 达到最大登录尝试次数，锁定用户
+                DateTime cstTime2 = TimeHelper.BeijingTime;
+                config.LockoutEndUtc = cstTime2.AddMinutes(config.LockoutDurationMinutes);
+            }
+
+            WriteConfig(config);
+            Password.Password = "";
         }
     }
+
+    // private void ToLogIn(object sender, RoutedEventArgs e)
+    // {
+    //     bool result = LogToGetToken(Account.Text, Password.Password);
+    //     if (result)
+    //     {
+    //         // 登录成功，去新页面，存储token
+    //         Jump_Mainwindos();
+    //     }
+    //     else
+    //     {
+    //         Password.Password = "";
+    //     }
+    // }
 
     /// 跳转到主页面函数
     /// <param name="window"></param>
@@ -36,6 +99,23 @@ public partial class LogIn : Window
         MainWindow mainWindow = new MainWindow();
         LogIn.GetWindow(this)?.Close();
         mainWindow.Show();
+    }
+
+    /// 跳转到注册页面函数
+    /// <param name="window"></param>
+    private void Jump_SignUp(object sender, RoutedEventArgs e)
+    {
+        SignUp newWindow = new SignUp();
+        this.IsEnabled = false; //禁用原来的窗口
+        // 订阅新窗口的 Closed 事件，在窗口关闭时恢复原始窗口的可用状态
+        newWindow.Closed += (sender, e) =>
+        {
+            this.IsEnabled = true;
+            //  当修改页面关闭后，才 清空输入
+            //     Account.Text = "";
+            //     Tip.Text = "";
+        };
+        newWindow.Show();
     }
 
     // 获取token，向服务器发起请求，接收返回
@@ -112,5 +192,35 @@ public partial class LogIn : Window
     {
         public static string UserAccount { get; set; }
         public static string LogInToken { get; set; }
+    }
+
+    // 隐藏密码功能
+    private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs e)
+    {
+        // 显示密码
+        PasswordText.Text = Password.Password;
+        Password.Visibility = Visibility.Collapsed;
+        PasswordText.Visibility = Visibility.Visible;
+    }
+
+    private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs e)
+    {
+        // 隐藏密码
+        PasswordText.Visibility = Visibility.Collapsed;
+        Password.Visibility = Visibility.Visible;
+    }
+
+    private void Password_PasswordChanged(object sender, RoutedEventArgs e)
+    {
+        // 当 PasswordBox 中的密码更改时，同步更新 TextBox 中的密码
+        PasswordText.Text = Password.Password;
+    }
+
+    public class LoginConfig
+    {
+        public int MaxLoginAttempts { get; set; } = 3;
+        public int LockoutDurationMinutes { get; set; } = 5;
+        public int FailedLoginAttempts { get; set; } = 0;
+        public DateTime? LockoutEndUtc { get; set; }
     }
 }

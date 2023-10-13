@@ -81,6 +81,11 @@
             <Setter Property="FontSize" Value="16" />
         </Style>
 
+        <Style x:Key="PassStyle" TargetType="PasswordBox">
+            <Setter Property="Foreground" Value="#BB905E" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
         <!-- 提示文本 -->
         <Style x:Key="InputLabelStyle" TargetType="Label">
             <Setter Property="FontSize" Value="16" />
@@ -98,6 +103,7 @@
                        HorizontalAlignment="Center"
                        Canvas.Left="135" Canvas.Top="60" />
 
+
             <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
             <!-- 输入框类 -->
             <Label Content="账号：" Style="{StaticResource InputLabelStyle}"
@@ -109,8 +115,14 @@
             <Label Content="密码：" Style="{StaticResource InputLabelStyle}"
                    HorizontalAlignment="Left" VerticalAlignment="Center"
                    Canvas.Left="120" Canvas.Top="210" />
-            <TextBox Name="Password" Width="150" Height="40" Canvas.Left="190" Canvas.Top="200"
-                     Style="{StaticResource TextBoxStyle}" />
+
+            <!-- 输入密码框 -->
+            <PasswordBox Name="Password" Width="150" Height="40" Canvas.Left="190" Canvas.Top="200"
+                         PasswordChanged="Password_PasswordChanged" />
+            <TextBox Name="PasswordText" Width="150" Height="40" Canvas.Left="190" Canvas.Top="200"
+                     Style="{StaticResource TextBoxStyle}" Visibility="Collapsed" />
+            <CheckBox Name="ShowPasswordCheckBox" Content="显示密码" Canvas.Left="350" Canvas.Top="215"
+                      Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked" />
 
 
             <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -119,7 +131,7 @@
                     Canvas.Left="195" Canvas.Top="260" Click="ToLogIn" />
 
             <Button Content="前往注册" Style="{StaticResource CustomButtonStyle3}" Width="120" Height="50"
-                    Canvas.Left="260" Canvas.Top="330" />
+                    Canvas.Left="260" Canvas.Top="330" Click="Jump_SignUp" />
             <Button Content="找回密码" Style="{StaticResource CustomButtonStyle2}" Width="120" Height="50"
                     Canvas.Left="120" Canvas.Top="330" />
 
