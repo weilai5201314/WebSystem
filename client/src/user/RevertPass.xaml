@@ -5,8 +5,143 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:client.user"
         mc:Ignorable="d"
-        Title="RevertPass" Height="450" Width="800">
+        Title="RevertPass" Height="450" Width="500" Background="Bisque">
+    <Window.Resources>
+        <!-- 主题功能按钮 -->
+        <Style x:Key="ButtonMainGreen" TargetType="Button">
+            <Setter Property="Background" Value="LightGreen" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15" Background="{TemplateBinding Background}" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#6ABD76" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ButtonMainBlue" TargetType="Button">
+            <Setter Property="Background" Value="#95E8EA" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15" Background="{TemplateBinding Background}" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#54B6BD" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ButtonMainPurple" TargetType="Button">
+            <Setter Property="Background" Value="#B19FF9" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15" Background="{TemplateBinding Background}" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#835DBD" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 输入文本框字体 -->
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="#BB905E" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <!-- 提示文本 -->
+        <Style x:Key="InputLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#1686F9" />
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="Margin" Value="10,0,0,0" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Canvas Width="500" Height="450">
+            <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+            <!-- 文本类 -->
+            <TextBlock Text="请在下方输入账号密码" FontSize="20" Foreground="#1686F9" FontFamily="Arial"
+                       HorizontalAlignment="Center"
+                       Canvas.Left="135" Canvas.Top="60" />
+            <TextBlock Text="输入只能是数字或者字符" FontSize="20" Foreground="#1686F9" FontFamily="Arial"
+                       HorizontalAlignment="Center"
+                       Canvas.Left="130" Canvas.Top="90" />
+            <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+            <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+            <!-- 文本框部分 -->
+            <!-- 下拉框 -->
+            <!-- <ComboBox Width="120" Height="45" Canvas.Left="190" Canvas.Top="150" -->
+            <!--           ItemTemplate="{StaticResource FlavorItemTemplate}" ItemsSource="{Binding FlavorOptions}" /> -->
+
+
+            <!-- 输入框 -->
+            <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+            <!-- 输入框类 -->
+            <Label Content="账号：" Style="{StaticResource InputLabelStyle}"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Canvas.Left="120" Canvas.Top="150" />
+            <TextBox Name="Account" Width="150" Height="40" Canvas.Left="190" Canvas.Top="140"
+                     Style="{StaticResource TextBoxStyle}" />
+
+            <Label Content="密码：" Style="{StaticResource InputLabelStyle}"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Canvas.Left="120" Canvas.Top="200" />
+            <TextBox Name="Password" Width="150" Height="40" Canvas.Left="190" Canvas.Top="190"
+                     Style="{StaticResource TextBoxStyle}" />
+
+            <Label Content="密码2：" Style="{StaticResource InputLabelStyle}"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Canvas.Left="111" Canvas.Top="250" />
+            <TextBox Name="Password2" Width="150" Height="40" Canvas.Left="190" Canvas.Top="240"
+                     Style="{StaticResource TextBoxStyle}" />
+            
+
+
+            <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+            <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+            <!-- 功能函数部分 -->
+            <!-- 随机出菜按钮 -->
+
+
+            <!-- 设置页面按钮 -->
+
+
+            <Button Content="申请找回" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
+                    Canvas.Left="190" Canvas.Top="330" Click="ToRevertPass" />
+
+
+        </Canvas>
     </Grid>
 </Window>

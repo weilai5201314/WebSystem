@@ -37,10 +37,11 @@ public partial class Api
                     u.ReturnResult,
                     u.ReturnValue
                 }).ToList();
-
+                
+                // 这里判断是否读取日志成功不是很好，因为loginfo.cout实际上是读取的日志数
+                bool succes = loginfo.Count > 0;
                 // 记录操作日志
-                var success = loginfo is OkObjectResult;
-                LogShowDaily(request.Account, success, request.Account, "ShowAll daily.");
+                LogShowDaily(request.Account, succes, request.Account, "ShowAll daily.");
                 // 返回所有Log信息
                 return Ok(loginfo);
             }

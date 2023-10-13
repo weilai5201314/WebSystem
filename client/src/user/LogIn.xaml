@@ -133,7 +133,7 @@
             <Button Content="前往注册" Style="{StaticResource CustomButtonStyle3}" Width="120" Height="50"
                     Canvas.Left="260" Canvas.Top="330" Click="Jump_SignUp" />
             <Button Content="找回密码" Style="{StaticResource CustomButtonStyle2}" Width="120" Height="50"
-                    Canvas.Left="120" Canvas.Top="330" />
+                    Canvas.Left="120" Canvas.Top="330" Click="Jump_RevertPass" />
 
         </Canvas>
     </Grid>
