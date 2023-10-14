@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using server.Mysql.Data;
 using server.Mysql.Models;
 using server.Time;
+
 namespace server.Controllers.Admin
 {
     public partial class Api
@@ -13,8 +14,8 @@ namespace server.Controllers.Admin
         [HttpDelete("DeleteUser")]
         public IActionResult DeleteUser([FromBody] DeleteUserRequest request)
         {
-            // 判断管理员权限
-            if (IsAdminAuthorizedToDelete(request.AdminAccount))
+            // 判断管理员权限能否删除
+            if (IsAdminAuthorizedToDelete(request.AdminAccount, request.UserAccount))
             {
                 // 判断是否删除
                 if (DeleteUserAccount(request.UserAccount))
@@ -42,13 +43,12 @@ namespace server.Controllers.Admin
         // 日志函数
         private void LogDeleteUser(string adminAccount, bool success, string inputvalue, string returnvalue)
         {
-            
             DateTime cstTime = TimeHelper.BeijingTime;
-            
+
             // 创建日志实体
             var log = new Log
             {
-                Timestamp = cstTime,            
+                Timestamp = cstTime,
                 User = adminAccount, // 记录管理员账号
                 Action = "DeleteUser", // 记录操作名称
                 InputResult = success,
@@ -69,11 +69,6 @@ namespace server.Controllers.Admin
         {
             try
             {
-                // 在这里编写从数据库中删除用户信息的逻辑
-                // 假设你有一个名为 "User" 的实体，它表示用户信息
-                // 你可以使用 Entity Framework Core 或其他数据访问方法来执行删除操作
-                // 这只是一个示例，你需要根据你的数据库模型和数据访问方法来实现删除逻辑
-
                 var userToDelete = DeleteUserContext.User.FirstOrDefault(u => u.Account == userAccount);
 
                 if (userToDelete != null)
@@ -101,18 +96,48 @@ namespace server.Controllers.Admin
         // 判断管理员是否有权限删除用户账户的方法
         // 实现判断管理员权限的逻辑，根据你的业务规则进行验证
         // 如果管理员有权限，返回 true，否则返回 false
-        private bool IsAdminAuthorizedToDelete(string adminAccount)
+        // 同时要注意下级管理不能删除上级管理
+        private bool IsAdminAuthorizedToDelete(string adminAccount, string userAccount)
         {
             // 获取管理员ID
             int adminID = GetUserIdByAccount(adminAccount);
             if (adminID != -1)
             {
-                // 判断此ID是否有管理员权限
-                // 只有3 和 5 才能删除
-                return CheckUserIdentity(adminID);
+                //  开始获取被删除用户ID
+                int userID = GetUserIdByAccount(userAccount);
+
+                //  开始获取两个用户的权限，判断是否能删除
+                //  身份组只有3 和 5 才能删除，且3不能删除5
+                bool result1 = CheckAdmin3_Identity(adminID);
+                bool result2 = CheckAdmin5_Identity(userID);
+                if (result1 && !result2)
+                    return CheckAdmin3_Identity(adminID);
+
+                //  下级尝试删除上级
+                return false;
             }
 
             // 不存在此 ID
+            return false;
+        }
+
+        // 检测5管理员身份组
+        // 需要用户的ID
+        private bool CheckAdmin5_Identity(int userId)
+        {
+            // 在这里查询数据库以验证用户的身份
+            // 假设 UserUserGroup 表包含用户的身份信息
+            var UserUserGroupId = ShowinfoContext.UserUsergroup.Where(ug => ug.UserID == userId);
+
+            foreach (var user in UserUserGroupId)
+            {
+                // 身份ID为3或5表示有效的身份
+                if (user.UserGroupID == 5)
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 

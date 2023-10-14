@@ -26,7 +26,7 @@ public partial class Api
                 if (AdminID != -1)
                 {
                     // 开始判断管理员权限
-                    bool validIdentity = CheckUserIdentity(AdminID);
+                    bool validIdentity = CheckAdmin3_Identity(AdminID);
                     if (validIdentity)
                     {
                         // 从user表先获取ID

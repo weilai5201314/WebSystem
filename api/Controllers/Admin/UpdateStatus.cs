@@ -21,7 +21,7 @@ public partial class Api
 
         if (adminId != -1)
         {
-            bool validIdentity = CheckUserIdentity(adminId);
+            bool validIdentity = CheckAdmin3_Identity(adminId);
 
             if (validIdentity)
             {

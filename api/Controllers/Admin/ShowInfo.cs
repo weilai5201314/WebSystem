@@ -24,7 +24,7 @@ public partial class Api
         if (userId != -1)
         {
             // 根据用户ID查询用户的身份
-            bool validIdentity = CheckUserIdentity(userId);
+            bool validIdentity = CheckAdmin3_Identity(userId);
 
             if (validIdentity)
             {
@@ -94,7 +94,7 @@ public partial class Api
 
     // 检测管理员身份组
     // 需要用户的ID
-    private bool CheckUserIdentity(int userId)
+    private bool CheckAdmin3_Identity(int userId)
     {
         // 在这里查询数据库以验证用户的身份
         // 假设 UserUserGroup 表包含用户的身份信息
