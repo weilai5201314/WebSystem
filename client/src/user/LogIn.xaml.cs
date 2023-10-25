@@ -111,39 +111,15 @@ public partial class LogIn : Window
     // 登录函数，带登录失败次数限制和锁定时间
     private void ToLogIn(object sender, RoutedEventArgs e)
     {
-        var config = ReadConfig();
-        DateTime cstTime = TimeHelper.BeijingTime;
-        if (config.LockoutEndUtc.HasValue && config.LockoutEndUtc > cstTime)
-        {
-            // 用户被锁定，不能登录
-            MessageBox.Show($"登录已被锁定，请稍后再试。", "登录失败");
-            return;
-        }
-
         bool result = LogToGetToken(Account.Text, Password.Password);
         if (result)
         {
-            // 登录成功，重置登录失败次数和锁定时间
-            config.FailedLoginAttempts = 0;
-            config.LockoutEndUtc = null;
-            WriteConfig(config);
-
             // 登录成功，去新页面，存储 token
             Jump_Mainwindos();
         }
         else
         {
-            // 登录失败，增加登录失败次数
-            config.FailedLoginAttempts++;
-
-            if (config.FailedLoginAttempts >= config.MaxLoginAttempts)
-            {
-                // 达到最大登录尝试次数，锁定用户
-                DateTime cstTime2 = TimeHelper.BeijingTime;
-                config.LockoutEndUtc = cstTime2.AddMinutes(config.LockoutDurationMinutes);
-            }
-
-            WriteConfig(config);
+            // MessageBox.Show($"账号或密码错误。", "登录失败");
             Password.Password = "";
         }
     }

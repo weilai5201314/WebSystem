@@ -2,7 +2,6 @@
 using server.HashEncry;
 using server.Mysql.Data;
 using server.Mysql.Models;
-// using System.Linq; // 导入 LINQ 查询命名空间
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
@@ -23,7 +22,6 @@ namespace server.Controllers.User
         [HttpPost("LogIn")]
         public IActionResult LogIn([FromBody] LogInRequest request)
         {
-            
             var user = DbContext.User.FirstOrDefault(u => u.Account == request.Account);
 
             if (user == null)
@@ -38,8 +36,7 @@ namespace server.Controllers.User
             // 判断密码是否正确
             if (PasswordHelper.VerifyPassword(request.Password, user.Salt, user.Pass))
             {
-                // 验证密码
-                // if (PasswordHelper.VerifyPassword(request.Password, user.Salt, user.Pass))
+                
                 // 判断状态能否登录
                 if (user.Status == 2)
                 {
@@ -52,10 +49,7 @@ namespace server.Controllers.User
                     // 返回成功登录的响应，包括 Token
                     return Ok(new { token });
                 }
-
-                // // 记录登录失败的日志
-                // LogLogin(user.ID, request.Account, false, "Invalid username or password");
-                // return BadRequest("Invalid username or password");
+                
                 // 记录登录失败的日志
                 LogLogin(user.ID, request.Account, false, "请等待管理审核。");
                 return BadRequest("请等待管理审核。");
@@ -63,9 +57,7 @@ namespace server.Controllers.User
 
             LogLogin(user.ID, request.Account, false, "Invalid  password");
             return BadRequest("Invalid  password");
-            // // 记录登录失败的日志
-            // LogLogin(user.ID, request.Account, false, "请等待管理审核。");
-            // return BadRequest("请等待管理审核。");
+           
         }
 
         // 添加记录登录操作的日志函数
@@ -90,6 +82,7 @@ namespace server.Controllers.User
         }
 
 
+        // 获取jwt得token序列
         private string GenerateJwtToken(server.Mysql.Models.User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -159,3 +159,14 @@
 2023-10-13T09:43:01.687229Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
 2023-10-13T09:43:01.715095Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
 2023-10-13T09:43:01.715156Z 0 [System] [MY-010931] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: ready for connections. Version: '8.0.32'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-10-19T09:43:34.144557Z 0 [System] [MY-013105] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Normal shutdown.
+2023-10-19T09:43:35.297198Z 0 [System] [MY-010910] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Shutdown complete (mysqld 8.0.32)  MySQL Community Server - GPL.
+2023-10-23T15:35:58.825309Z 0 [System] [MY-010116] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld (mysqld 8.0.32) starting as process 15112
+2023-10-23T15:35:58.844524Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-10-23T15:35:59.123308Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-10-23T15:35:59.384939Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-10-23T15:35:59.385303Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-10-23T15:35:59.419811Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-10-23T15:35:59.419867Z 0 [System] [MY-010931] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: ready for connections. Version: '8.0.32'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-10-25T12:44:00.826207Z 0 [System] [MY-013105] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Normal shutdown.
+2023-10-25T12:44:01.464209Z 0 [System] [MY-010910] [Server] D:\zzz\school\InfoSecurity\WebSystem\mysql-8.0.32-winx64\bin\mysqld: Shutdown complete (mysqld 8.0.32)  MySQL Community Server - GPL.

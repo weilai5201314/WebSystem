@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using server.Mysql.Data;
 using server.Mysql.Models;
 using server.Time;
+using server.lib.admin;
 
 namespace server.Controllers.Admin
 {
@@ -109,7 +110,9 @@ namespace server.Controllers.Admin
                 //  开始获取两个用户的权限，判断是否能删除
                 //  身份组只有3 和 5 才能删除，且3不能删除5
                 bool result1 = CheckAdmin3_Identity(adminID);
-                bool result2 = CheckAdmin5_Identity(userID);
+                // bool result2 = CheckAdmin5_Identity(userID);
+                bool result2 = new Check().CheckAdmin5_Identity(userID);
+
                 if (result1 && !result2)
                     return CheckAdmin3_Identity(adminID);
 
@@ -123,23 +126,23 @@ namespace server.Controllers.Admin
 
         // 检测5管理员身份组
         // 需要用户的ID
-        private bool CheckAdmin5_Identity(int userId)
-        {
-            // 在这里查询数据库以验证用户的身份
-            // 假设 UserUserGroup 表包含用户的身份信息
-            var UserUserGroupId = ShowinfoContext.UserUsergroup.Where(ug => ug.UserID == userId);
-
-            foreach (var user in UserUserGroupId)
-            {
-                // 身份ID为3或5表示有效的身份
-                if (user.UserGroupID == 5)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        // private bool CheckAdmin5_Identity(int adminId)
+        // {
+        //     // 在这里查询数据库以验证用户的身份
+        //     // 假设 UserUserGroup 表包含用户的身份信息
+        //     var userUserGroupId = ShowinfoContext.UserUsergroup.Where(ug => ug.UserID == adminId);
+        //
+        //     foreach (var user in userUserGroupId)
+        //     {
+        //         // 身份ID为3或5表示有效的身份
+        //         if (user.UserGroupID == 5)
+        //         {
+        //             return true;
+        //         }
+        //     }
+        //
+        //     return false;
+        // }
 
 
         public class DeleteUserRequest

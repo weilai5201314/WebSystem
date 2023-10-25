@@ -10,7 +10,7 @@ namespace server.Controllers.User;
 public partial class Api
 {
     [FromServices] public MysqlDbContext RevertPass_Context { get; set; }
-    
+
     [HttpPost("RevertPass")]
     public IActionResult RevertPass([FromBody] RevertPassRequest request)
     {
@@ -21,7 +21,7 @@ public partial class Api
                 validateAllProperties: true))
         {
             // 如果验证失败，返回错误消息
-            LogRevertPass(request.Account,false,$"{request.Account} {request.Password}","提交成功，等待管理审核。");
+            LogRevertPass(request.Account, false, $"{request.Account} {request.Password}", "提交成功，等待管理审核。");
             return BadRequest(validationResults.Select(r => r.ErrorMessage));
         }
 
@@ -33,7 +33,7 @@ public partial class Api
         if (user == null)
         {
             // 记录提交找回密码失败的日志
-            LogRevertPass(request.Account, false,$"{request.Account} {request.Password}","提交成功，等待管理审核。");
+            LogRevertPass(request.Account, false, $"{request.Account} {request.Password}", "提交成功，等待管理审核。");
             return BadRequest("Invalid username or password");
         }
 
@@ -44,13 +44,13 @@ public partial class Api
         RevertPass_Context.SaveChanges();
 
         // 记录提交找回密码成功的日志
-        LogRevertPass(request.Account, true,$"{request.Account} {request.Password}","提交成功，等待管理审核。");
+        LogRevertPass(request.Account, true, $"{request.Account} {request.Password}", "提交成功，等待管理审核。");
 
         return Ok("提交成功，等待管理审核。");
     }
 
 // 添加记录提交找回密码操作的日志函数
-    private void LogRevertPass(string userName, bool success,string inputvalue,string returnvalue)
+    private void LogRevertPass(string userName, bool success, string inputvalue, string returnvalue)
     {
         DateTime cstTime = TimeHelper.BeijingTime;
         // 创建日志实体
@@ -71,6 +71,7 @@ public partial class Api
     }
 
 
+    // 找回密码请求格式
     public class RevertPassRequest
     {
         [Required(ErrorMessage = "Account is required.")]

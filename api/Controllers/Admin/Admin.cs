@@ -11,9 +11,5 @@ namespace server.Controllers.Admin
         {
             return Ok("Hello,Admin!");
         }
-        
-        
     }
-
-    
 }

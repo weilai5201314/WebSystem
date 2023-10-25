@@ -11,9 +11,5 @@ namespace server.Controllers.User
         {
             return Ok("Hello,user!");
         }
-        
-        
     }
-
-    
 }

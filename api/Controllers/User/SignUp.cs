@@ -12,7 +12,7 @@ namespace server.Controllers.User
         // 使用属性注入
         [FromServices] public MysqlDbContext SignUp_context { get; set; }
 
-        
+
         [HttpPost("SignUp")]
         public IActionResult SignUp([FromBody] SignUpRequest request)
         {
@@ -24,7 +24,7 @@ namespace server.Controllers.User
                     validateAllProperties: true))
             {
                 // 如果验证失败，返回错误消息
-                LogSignUp(request.Account, false,$"{request.Account} {request.Password}", "非法输入。");
+                LogSignUp(request.Account, false, $"{request.Account} {request.Password}", "非法输入。");
                 return BadRequest(validationResults.Select(r => r.ErrorMessage));
             }
 
@@ -32,7 +32,7 @@ namespace server.Controllers.User
             if (SignUp_context.User.Any(u => u.Account == request.Account))
             {
                 // 记录注册失败的日志
-                LogSignUp(request.Account, false,$"{request.Account} {request.Password}", "Username already exists.");
+                LogSignUp(request.Account, false, $"{request.Account} {request.Password}", "Username already exists.");
                 return BadRequest("Username already exists.");
             }
 
@@ -54,13 +54,13 @@ namespace server.Controllers.User
             SignUp_context.SaveChanges();
 
             // 记录注册成功的日志
-            LogSignUp(request.Account, true,$"{request.Account} {request.Password}", "注册成功，等待管理审核。");
+            LogSignUp(request.Account, true, $"{request.Account} {request.Password}", "注册成功，等待管理审核。");
 
             return Ok("注册成功，等待管理审核。");
         }
 
-// 添加记录注册操作的日志函数
-        private void LogSignUp(string userName, bool success,string input, string message)
+        // 添加记录注册操作的日志函数
+        private void LogSignUp(string userName, bool success, string input, string message)
         {
             DateTime cstTime = TimeHelper.BeijingTime;
             // 创建日志实体
@@ -81,6 +81,7 @@ namespace server.Controllers.User
         }
     }
 
+    // 注册请求参数格式
     public class SignUpRequest
     {
         [Required(ErrorMessage = "Account is required.")]
