@@ -1,25 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using server.HashEncry;
 using server.Mysql.Data;
 using server.Mysql.Models;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.ComponentModel.DataAnnotations;
-using server.Time; // 导入数据注解命名空间
+using server.Time;
 
-namespace server.Controllers.User
+namespace server.Controllers
 {
     public partial class Api
     {
         // 构造注入数据库结构
         [FromServices] public MysqlDbContext DbContext { get; set; }
 
-        [FromServices] public IConfiguration Configuration { get; set; }
 
-
-        [HttpPost("LogIn")]
+        [HttpPost("user/LogIn")]
         public IActionResult LogIn([FromBody] LogInRequest request)
         {
             var user = DbContext.User.FirstOrDefault(u => u.Account == request.Account);

@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using server.HashEncry;
 using server.Mysql.Data;
-using System.ComponentModel.DataAnnotations; // 导入数据注解命名空间
 using server.Mysql.Models;
-using server.Time; // 导入Log实体类所在的命名空间
+using server.Time;
+
+// 导入数据注解命名空间
+
+// 导入Log实体类所在的命名空间
 
 namespace server.Controllers.User;
 
@@ -27,8 +32,8 @@ public partial class Api
 
         // 判断用户是否存在
         // 根据用户名从数据库中查找用户
-        var user = RevertPass_Context.User.FirstOrDefault(u => u.Account == request.Account);
-
+        // var user = RevertPass_Context.User.FirstOrDefault(u => u.Account == request.Account);
+        var user = Queryable.FirstOrDefault<Mysql.Models.User>(RevertPass_Context.User, u => u.Account == request.Account);
         // 检查用户是否存在
         if (user == null)
         {
@@ -41,8 +46,8 @@ public partial class Api
         var hash = PasswordHelper.HashPassword(request.Password, user.Salt);
         user.RevertPass = hash;
         user.Status = 3; // 3 待审核
+        // RevertPass_Context.SaveChanges();
         RevertPass_Context.SaveChanges();
-
         // 记录提交找回密码成功的日志
         LogRevertPass(request.Account, true, $"{request.Account} {request.Password}", "提交成功，等待管理审核。");
 
@@ -66,6 +71,8 @@ public partial class Api
         };
 
         // 将日志实体添加到数据库中
+        // RevertPass_Context.Log.Add(log);
+        // RevertPass_Context.SaveChanges();
         RevertPass_Context.Log.Add(log);
         RevertPass_Context.SaveChanges();
     }
