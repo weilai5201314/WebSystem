@@ -102,8 +102,8 @@ public partial class Api
 
         foreach (var user in UserUserGroupId)
         {
-            // 身份ID为3或5表示有效的身份
-            if (user.UserGroupID == 3 || user.UserGroupID == 5)
+            // 身份ID为 3 表示有效的身份
+            if (user.UserGroupID == 3)
             {
                 return true;
             }

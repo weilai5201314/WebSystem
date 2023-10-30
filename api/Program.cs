@@ -20,7 +20,7 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false);
 // 添加数据库上下文
 builder.Services.AddDbContext<MysqlDbContext>(options =>
 {
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty);
 });
 
 
