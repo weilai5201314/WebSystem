@@ -1,6 +1,16 @@
 ﻿namespace server.Mysql.Models
 {
     // user 表
+    // public class User
+    // {
+    //     public int ID { get; set; }
+    //     public string Account { get; set; }
+    //     public byte[] Pass { get; set; } // 存储哈希密码
+    //     public byte[] Salt { get; set; } // 存储盐值
+    //     public int Status { get; set; } // 用户状态
+    //     public byte[] RevertPass { get; set; }
+    // }
+    // user 表
     public class User
     {
         public int ID { get; set; }
@@ -9,7 +19,10 @@
         public byte[] Salt { get; set; } // 存储盐值
         public int Status { get; set; } // 用户状态
         public byte[] RevertPass { get; set; }
+        public int N { get; set; } // 迭代次数
+        public byte[] R { get; set; } // 随机数
     }
+
 
     // usergroup 表
     public class UserGroup
