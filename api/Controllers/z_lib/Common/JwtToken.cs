@@ -1,12 +1,16 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace server.Controllers;
 
 public partial class Api
 {
+    // 注入jwt配置服务
+    [FromServices] public IConfiguration Configuration { get; set; }
+
     // 获取 jwt 的 token 序列
     private string GenerateJwtToken(server.Mysql.Models.User user)
     {

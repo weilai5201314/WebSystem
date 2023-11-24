@@ -7,9 +7,7 @@ namespace server.Controllers
 {
     public partial class Api
     {
-        // 构造注入数据库结构
-        [FromServices] public MysqlDbContext DbContext { get; set; }
-        [FromServices] public IConfiguration Configuration { get; set; }
+        
 
         [HttpPost("user/LogIn")]
         public IActionResult LogIn([FromBody] LogInRequest request)
