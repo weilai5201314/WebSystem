@@ -1,0 +1,15 @@
+D:\zzz\school\InfoSecurity\WebSystem\test\bin\Debug\net7.0\test.exe
+D:\zzz\school\InfoSecurity\WebSystem\test\bin\Debug\net7.0\test.deps.json
+D:\zzz\school\InfoSecurity\WebSystem\test\bin\Debug\net7.0\test.runtimeconfig.json
+D:\zzz\school\InfoSecurity\WebSystem\test\bin\Debug\net7.0\test.dll
+D:\zzz\school\InfoSecurity\WebSystem\test\bin\Debug\net7.0\test.pdb
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.csproj.AssemblyReference.cache
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.GeneratedMSBuildEditorConfig.editorconfig
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.AssemblyInfoInputs.cache
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.AssemblyInfo.cs
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.csproj.CoreCompileInputs.cache
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.dll
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\refint\test.dll
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.pdb
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\test.genruntimeconfig.cache
+D:\zzz\school\InfoSecurity\WebSystem\test\obj\Debug\net7.0\ref\test.dll

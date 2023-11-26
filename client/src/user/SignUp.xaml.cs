@@ -26,14 +26,15 @@ public partial class SignUp : Window
         int n = 0; //迭代次数
         byte[] r = new byte[32]; //随机数
         byte[] PassHash; // 用于存放加密后的密码
-
+        byte[] PassHash1; // 用于存放加密后的密码
         // 先向第一个接口发起请求
 
         if (GetSignUp1(Account.Text, out n, out r))
         {
             // 开始加密,获取加密后返回值
             // 注意是注册阶段，迭代次数是 N+1 次
-            PassHash = PassHelper.HashForLogin2(Password.Text, n+1 , r);
+            PassHash1 = PassHelper.HashForLogin2(Password.Text, n, r);
+            PassHash = PassHelper.HashForLogin2(Convert.ToBase64String(PassHash1), 1, r);
             // 开始向第二个接口发起请求
             if (GetSignUp2(Account.Text, PassHash))
             {

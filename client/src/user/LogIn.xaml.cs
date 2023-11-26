@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Text.Json;
+using client.config.HashEncry;
 using client.config.time;
 
 namespace client.user;
@@ -21,22 +22,152 @@ public partial class LogIn : Window
         InitializeComponent();
     }
 
-    private LoginConfig ReadConfig()
-    {
-        if (File.Exists(ConfigFilePath))
-        {
-            string json = File.ReadAllText(ConfigFilePath);
-            return System.Text.Json.JsonSerializer.Deserialize<LoginConfig>(json); // 使用 System.Text.Json
-        }
 
-        return new LoginConfig();
+    // 登录函数
+    private void ToLogIn(object sender, RoutedEventArgs e)
+    {
+        int n;
+        byte[] r;
+
+        bool result = LogToGetNAndR(Account.Text, Password.Password, out n, out r);
+
+        if (result)
+        {
+            // 开始加密,获取加密后返回值
+            byte[] PassHash = PassHelper.HashForLogin2(Password.Password, n, r);
+
+            // 开始向第二个接口发起请求
+            if (GetLogIn2(Account.Text, PassHash))
+            {
+                // 登录成功，去新页面
+                Jump_Mainwindos();
+            }
+        }
+        else
+        {
+            // 失败处理
+            Password.Password = "";
+        }
     }
 
-    // 写入 JSON 配置文件
-    private void WriteConfig(LoginConfig config)
+    // 进行第二个接口的请求
+    private bool GetLogIn2(string useraccount, byte[] HashPass)
     {
-        string json = System.Text.Json.JsonSerializer.Serialize(config); // 使用 System.Text.Json
-        File.WriteAllText(ConfigFilePath, json);
+        using (var client = new HttpClient())
+        {
+            // 构建请求数据
+            var requestData = new
+            {
+                account = useraccount,
+                password = Convert.ToBase64String(HashPass) // 将加密后的密码转换为 Base64 字符串
+            };
+
+            // 将请求数据转换为 JSON
+            var requestDataJson = JsonConvert.SerializeObject(requestData);
+
+            // 创建 HTTP 请求消息
+            var content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+            // 发起 POST 请求
+            var response = client.PostAsync("http://localhost:5009/Api/user/LogIn2", content).Result;
+
+            // 判断网络状态码
+            if (response.IsSuccessStatusCode)
+            {
+                // 登录成功
+                var successful = response.Content.ReadAsStringAsync().Result;
+                MessageBox.Show(successful, "登录成功2");
+                return true;
+            }
+            else
+            {
+                // 登录失败
+                var errorResponse = response.Content.ReadAsStringAsync().Result;
+                MessageBox.Show(errorResponse, "登录失败2");
+                return false;
+            }
+        }
+    }
+
+
+    // 获取 n 和 r，向服务器发起请求，接收返回
+    // 输入：账号，密码
+    // 返回：  成功，返回：n 和 r
+    //        失败，返回：不同的 string 字符串
+    private bool LogToGetNAndR(string usaccount, string uspassword, out int n, out byte[] r)
+    {
+        using (var client = new HttpClient())
+        {
+            // 构建请求数据
+            var requestData = new
+            {
+                account = usaccount,
+                password = uspassword
+            };
+
+            // 将请求数据转换为 JSON
+            var requestDataJson = JsonConvert.SerializeObject(requestData);
+
+            // 创建 HTTP 请求消息
+            var content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+            // 发起 POST 请求
+            var response = client.PostAsync("http://localhost:5009/Api/user/LogIn", content).Result;
+
+            // 判断网络状态码
+            if (response.IsSuccessStatusCode)
+            {
+                // 登录成功
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+
+                try
+                {
+                    // 解析 JSON 响应
+                    var jsonResponse = JsonConvert.DeserializeObject<JObject>(responseContent);
+                    if (jsonResponse.ContainsKey("response"))
+                    {
+                        // 提取 n 和 r
+                        var responseData = jsonResponse["response"].ToObject<JObject>();
+                        n = responseData["n"].Value<int>();
+                        r = Convert.FromBase64String(responseData["r"].Value<string>());
+                        return true; // 登录成功
+                    }
+                    else
+                    {
+                        // 服务器返回的 JSON 中没有 response，表示登录失败
+                        var errorResponse = response.Content.ReadAsStringAsync().Result;
+                        MessageBox.Show(errorResponse, "登录失败");
+                        n = 0;
+                        r = null;
+                        return false;
+                    }
+                }
+                catch (JsonReaderException)
+                {
+                    // 无法解析 JSON，表示登录失败
+                    var errorResponse = response.Content.ReadAsStringAsync().Result;
+                    MessageBox.Show(errorResponse, "登录失败");
+                    n = 0;
+                    r = null;
+                    return false;
+                }
+            }
+            else
+            {
+                // 处理请求失败的情况
+                var errorResponse = response.Content.ReadAsStringAsync().Result;
+                MessageBox.Show(errorResponse, "登录失败");
+                n = 0;
+                r = null;
+                return false;
+            }
+        }
+    }
+
+    public class FirstResponse
+    {
+        public int N { get; set; }
+        public string R { get; set; }
     }
 
     // 获取token，向服务器发起请求，接收返回
@@ -108,22 +239,7 @@ public partial class LogIn : Window
         }
     }
 
-    // 登录函数，带登录失败次数限制和锁定时间
-    private void ToLogIn(object sender, RoutedEventArgs e)
-    {
-        bool result = LogToGetToken(Account.Text, Password.Password);
-        if (result)
-        {
-            // 登录成功，去新页面，存储 token
-            Jump_Mainwindos();
-        }
-        else
-        {
-            // MessageBox.Show($"账号或密码错误。", "登录失败");
-            Password.Password = "";
-        }
-    }
-    
+
     /// 跳转到主页面函数
     /// <param name="window"></param>
     private void Jump_Mainwindos()
