@@ -63,6 +63,7 @@ namespace server.HashEncry
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, r, n))
             {
+                
                 return pbkdf2.GetBytes(HashSize);
             }
         }
@@ -73,7 +74,7 @@ namespace server.HashEncry
             // 这里可以根据需求设置合适的范围，比如 1 到 1000 之间
             //  在测试得时候可以调小范围，便于调试
             var random = new Random();
-            return random.Next(2, 3);
+            return random.Next(3, 5);
         }
 
         // 生成随机数 R

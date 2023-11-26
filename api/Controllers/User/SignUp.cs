@@ -44,7 +44,9 @@ namespace server.Controllers
                 Status = 0,
                 RevertPass = new byte[256],
                 N = n,
-                R = r
+                R = r,
+                N2 = 0,
+                R2 = new byte[32]
             };
             // 将新用户添加到数据库
             SignUp_context.User.Add(newUser);

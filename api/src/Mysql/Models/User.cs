@@ -21,6 +21,8 @@
         public byte[] RevertPass { get; set; }
         public int N { get; set; } // 迭代次数
         public byte[] R { get; set; } // 随机数
+        public int N2 { get; set; } // 迭代次数2
+        public byte[] R2 { get; set; } // 随机数2
     }
 
 

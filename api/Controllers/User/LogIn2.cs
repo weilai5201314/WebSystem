@@ -28,6 +28,23 @@ namespace server.Controllers
                 {
                     // 密码验证通过，创建 JWT Token
                     var token = GenerateJwtToken(user);
+                    // 同时还要修改 n ,但是要先判断是不是1
+                    // 如果是，直接用n2，r2覆盖，否则-1
+                    if (user.N == 2)
+                    {
+                        user.N = user.N2;
+                        user.R = user.R2;
+                        user.Pass = Convert.FromBase64String(request.Password2);
+                    }
+                    else
+                    {
+                        user.N -= 1;
+                        user.Pass = Convert.FromBase64String(request.Password2);
+                    }
+
+
+                    DbContext.User.Update(user);
+                    DbContext.SaveChanges();
                     // 记录登录成功的日志
                     TypeLog(request.Account, "LogIn", true, request.Account, true, token);
                     // 返回成功登录的响应，包括 Token
@@ -57,5 +74,11 @@ namespace server.Controllers
             ErrorMessage =
                 "Password must be alphanumeric and may include special characters. It should be less than or equal to 30 characters.")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Password is required.")]
+        [RegularExpression("^[a-zA-Z0-9!@#$%^&*()_+\\-=[\\]{};:'\\\",<.>/?]+$",
+            ErrorMessage =
+                "Password must be alphanumeric and may include special characters. It should be less than or equal to 30 characters.")]
+        public string Password2 { get; set; }
     }
 }

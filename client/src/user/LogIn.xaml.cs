@@ -26,18 +26,28 @@ public partial class LogIn : Window
     // 登录函数
     private void ToLogIn(object sender, RoutedEventArgs e)
     {
-        int n;
-        byte[] r;
+        int n, n2;
+        byte[] r, r2;
 
-        bool result = LogToGetNAndR(Account.Text, Password.Password, out n, out r);
+
+        bool result = LogToGetNAndR(Account.Text, Password.Password, out n, out r, out n2, out r2);
 
         if (result)
         {
             // 开始加密,获取加密后返回值
             byte[] PassHash = PassHelper.HashForLogin2(Password.Password, n, r);
+            byte[] PassHash2 = PassHelper.HashForLogin2(Password.Password, n - 1, r);
+            PassHash2 = PassHelper.HashForLogin2(Convert.ToBase64String(PassHash2), 1, r);
+            //  因为 n == 1 ，计算用于重置
+            if (n == 2)
+            {
+                PassHash2 = PassHelper.HashForLogin2(Password.Password, n2, r2);
+                PassHash2 = PassHelper.HashForLogin2(Convert.ToBase64String(PassHash2), 1, r2);
+            }
+
 
             // 开始向第二个接口发起请求
-            if (GetLogIn2(Account.Text, PassHash))
+            if (GetLogIn2(Account.Text, PassHash, PassHash2))
             {
                 // 登录成功，去新页面
                 Jump_Mainwindos();
@@ -51,7 +61,7 @@ public partial class LogIn : Window
     }
 
     // 进行第二个接口的请求
-    private bool GetLogIn2(string useraccount, byte[] HashPass)
+    private bool GetLogIn2(string useraccount, byte[] HashPass, byte[] HashPass2)
     {
         using (var client = new HttpClient())
         {
@@ -59,7 +69,8 @@ public partial class LogIn : Window
             var requestData = new
             {
                 account = useraccount,
-                password = Convert.ToBase64String(HashPass) // 将加密后的密码转换为 Base64 字符串
+                password = Convert.ToBase64String(HashPass), // 将加密后的密码转换为 Base64 字符串
+                password2 = Convert.ToBase64String(HashPass2)
             };
 
             // 将请求数据转换为 JSON
@@ -89,13 +100,15 @@ public partial class LogIn : Window
         }
     }
 
-
+    // 进行第一个接口的请求
     // 获取 n 和 r，向服务器发起请求，接收返回
     // 输入：账号，密码
     // 返回：  成功，返回：n 和 r
     //        失败，返回：不同的 string 字符串
-    private bool LogToGetNAndR(string usaccount, string uspassword, out int n, out byte[] r)
+    private bool LogToGetNAndR(string usaccount, string uspassword, out int n, out byte[] r, out int n2, out byte[] r2)
     {
+        n2 = 0;
+        r2 = new byte[32];
         using (var client = new HttpClient())
         {
             // 构建请求数据
@@ -130,6 +143,13 @@ public partial class LogIn : Window
                         var responseData = jsonResponse["response"].ToObject<JObject>();
                         n = responseData["n"].Value<int>();
                         r = Convert.FromBase64String(responseData["r"].Value<string>());
+                        // 如果 n == 1 则还要提取备用,用于后续重置
+                        if (n == 2)
+                        {
+                            n2 = responseData["n2"].Value<int>();
+                            r2 = Convert.FromBase64String(responseData["r2"].Value<string>());
+                        }
+
                         return true; // 登录成功
                     }
                     else
@@ -168,6 +188,8 @@ public partial class LogIn : Window
     {
         public int N { get; set; }
         public string R { get; set; }
+        public int N2 { get; set; }
+        public string R2 { get; set; }
     }
 
     // 获取token，向服务器发起请求，接收返回
