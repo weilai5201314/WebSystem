@@ -62,5 +62,12 @@ namespace client
             };
             newWindow.Show();
         }
+
+        private void Button_LogOut(object sender, RoutedEventArgs e)
+        {
+            GetWindow(this)?.Close();
+            LogIn newWindow = new LogIn();
+            newWindow.Show();
+        }
     }
 }

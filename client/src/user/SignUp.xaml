@@ -141,7 +141,7 @@
 
 
             <Button Content="注册" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
-                    Canvas.Left="190" Canvas.Top="330" Click="ToSignUp" />
+                    Canvas.Left="190" Canvas.Top="330" Click="Button_ToSignUp" />
 
 
         </Canvas>

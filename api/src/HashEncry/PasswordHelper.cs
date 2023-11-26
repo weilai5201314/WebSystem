@@ -66,7 +66,7 @@ namespace server.HashEncry
         // 生成随机的迭代次数 N
         public static int GetRandomN()
         {
-            // 这里可以根据需求设置合适的范围，比如 1 到 10000 之间
+            // 这里可以根据需求设置合适的范围，比如 1 到 1000 之间
             var random = new Random();
             return random.Next(1, 1000);
         }

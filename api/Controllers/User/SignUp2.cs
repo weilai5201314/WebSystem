@@ -20,7 +20,6 @@ namespace server.Controllers
             var user = DbContext.User.FirstOrDefault(u => u.Account == request.Account);
             //  提取 N+1 次迭代值入库
             //  先转化
-            byte[] passwordBytes;
             try
             {
                 user.Pass = Convert.FromBase64String(request.Password);
@@ -47,7 +46,7 @@ namespace server.Controllers
         public string Account { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
-        [RegularExpression("^[a-zA-Z0-9]{1,20}$", ErrorMessage = "密码只能是20位以内的数字或者字母.")]
+        // [RegularExpression("^[a-zA-Z0-9]{8,20}$", ErrorMessage = "密码只能是8-20位的数字或者字母.")]
         public string Password { get; set; }
     }
 }

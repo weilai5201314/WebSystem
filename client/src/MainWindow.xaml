@@ -109,8 +109,8 @@
             <Button Content="找回密码" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="120" Canvas.Top="260" Click="ToRevertPass" />
 
-            <Button Content="待定" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
-                    Canvas.Left="260" Canvas.Top="260" />
+            <Button Content="退出登录" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
+                    Canvas.Left="260" Canvas.Top="260" Click="Button_LogOut" />
 
             <Button Content="管理用户" Style="{StaticResource ButtonMainGreen}" Width="120" Height="50"
                     Canvas.Left="260" Canvas.Top="330" Click="ToShowInfo" />
