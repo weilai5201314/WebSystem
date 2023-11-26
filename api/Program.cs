@@ -53,7 +53,8 @@ app.Use(async (context, next) =>
 
     var path = context.Request.Path.Value;
     if ((path == "/Api/user/SignUp" || path == "/Api/user/SignUp2" || path == "/Api/user/LogIn" ||
-         path == "/Api/user/RevertPass") && (context.Request.Method == "POST" || context.Request.Method == "PUT"))
+         path == "/Api/user/LogIn2" || path == "/Api/user/RevertPass") &&
+        (context.Request.Method == "POST" || context.Request.Method == "PUT"))
 
         // 测试专用判断条件
         // if (path != "/Api")
@@ -102,7 +103,7 @@ app.Use(async (context, next) =>
     }
 
     // 如果没有提供有效的 Authorization 头或验证失败，返回未授权状态码
-    context.Response.StatusCode = 401;
+    context.Response.StatusCode = 411;
 });
 
 app.Run();

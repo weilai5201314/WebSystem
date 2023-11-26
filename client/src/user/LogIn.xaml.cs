@@ -123,21 +123,7 @@ public partial class LogIn : Window
             Password.Password = "";
         }
     }
-
-    // private void ToLogIn(object sender, RoutedEventArgs e)
-    // {
-    //     bool result = LogToGetToken(Account.Text, Password.Password);
-    //     if (result)
-    //     {
-    //         // 登录成功，去新页面，存储token
-    //         Jump_Mainwindos();
-    //     }
-    //     else
-    //     {
-    //         Password.Password = "";
-    //     }
-    // }
-
+    
     /// 跳转到主页面函数
     /// <param name="window"></param>
     private void Jump_Mainwindos()

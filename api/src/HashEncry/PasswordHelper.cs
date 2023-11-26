@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Text;
 
 namespace server.HashEncry
 {
@@ -11,21 +12,21 @@ namespace server.HashEncry
         private const int HashSize = 32;
 
         // 生成盐值和哈希密码的方法
-        public static (byte[] salt, byte[] hash) GenerateSaltAndHash(string password)
-        {
-            // 使用 RNGCryptoServiceProvider 生成随机的盐值
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                var salt = new byte[SaltSize];
-                rng.GetBytes(salt);
-
-                // 调用 HashPassword 方法生成哈希密码
-                var hash = HashPassword(password, salt);
-
-                // 返回生成的盐值和哈希密码
-                return (salt, hash);
-            }
-        }
+        // public static (byte[] salt, byte[] hash) GenerateSaltAndHash(string password)
+        // {
+        //     // 使用 RNGCryptoServiceProvider 生成随机的盐值
+        //     using (var rng = new RNGCryptoServiceProvider())
+        //     {
+        //         var salt = new byte[SaltSize];
+        //         rng.GetBytes(salt);
+        //
+        //         // 调用 HashPassword 方法生成哈希密码
+        //         var hash = HashPassword(password, salt);
+        //
+        //         // 返回生成的盐值和哈希密码
+        //         return (salt, hash);
+        //     }
+        // }
 
         // 生成哈希密码的方法
         public static byte[] HashPassword(string password, byte[] salt)
@@ -37,22 +38,25 @@ namespace server.HashEncry
             }
         }
 
-        // 验证密码的方法
-        public static bool VerifyPassword(string password, byte[] salt, byte[] storedHash)
+        // // 验证密码的方法
+        // public static bool VerifyPassword(string password, byte[] salt, byte[] storedHash)
+        // {
+        //     // 重新生成哈希密码并与存储的哈希密码比较，以验证密码是否匹配
+        //     var newHash = HashPassword(password, salt);
+        //     return newHash.SequenceEqual(storedHash);
+        // }
+
+        // 验证 n 次密码的方法
+        public static bool ComparePasswords(string inputPassword, byte[] storedHash, byte[] r, int n)
         {
-            // 重新生成哈希密码并与存储的哈希密码比较，以验证密码是否匹配
-            var newHash = HashPassword(password, salt);
-            return newHash.SequenceEqual(storedHash);
+            // 使用 VerifyPassword2 进行密码比较，对用户输入的密码进行 n 次迭代
+            var hashedInputPassword = HashForLogin2(inputPassword, r, n);
+
+            // 比较哈希值是否相同
+            return hashedInputPassword.SequenceEqual(storedHash);
         }
 
-
-        // 验证密码的方法
-        public static bool VerifyPassword2(string password, byte[] r, byte[] storedHash, int n)
-        {
-            // 在登录阶段，重新生成哈希密码并与存储的哈希密码比较，以验证密码是否匹配
-            var newHash = HashForLogin2(password, r, n);
-            return newHash.SequenceEqual(storedHash);
-        }
+        
 
         //  n 次迭代
         public static byte[] HashForLogin2(string password, byte[] r, int n)
@@ -67,8 +71,9 @@ namespace server.HashEncry
         public static int GetRandomN()
         {
             // 这里可以根据需求设置合适的范围，比如 1 到 1000 之间
+            //  在测试得时候可以调小范围，便于调试
             var random = new Random();
-            return random.Next(1, 1000);
+            return random.Next(2, 3);
         }
 
         // 生成随机数 R

@@ -32,7 +32,8 @@ public partial class SignUp : Window
         if (GetSignUp1(Account.Text, out n, out r))
         {
             // 开始加密,获取加密后返回值
-            PassHash = PassHelper.HashForLogin2(Password.Text, n, r);
+            // 注意是注册阶段，迭代次数是 N+1 次
+            PassHash = PassHelper.HashForLogin2(Password.Text, n+1 , r);
             // 开始向第二个接口发起请求
             if (GetSignUp2(Account.Text, PassHash))
             {

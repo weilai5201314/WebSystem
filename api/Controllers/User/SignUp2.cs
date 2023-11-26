@@ -5,9 +5,6 @@ namespace server.Controllers
 {
     public partial class Api
     {
-        // 使用属性注入
-
-
         [HttpPost("user/SignUp2")]
         public IActionResult SignUp2([FromBody] SignUp2Request request)
         {
@@ -16,10 +13,9 @@ namespace server.Controllers
             {
                 return BadRequest("User not found.");
             }
-
             var user = DbContext.User.FirstOrDefault(u => u.Account == request.Account);
             //  提取 N+1 次迭代值入库
-            //  先转化
+            //  先转化，再入库
             try
             {
                 user.Pass = Convert.FromBase64String(request.Password);
@@ -28,8 +24,6 @@ namespace server.Controllers
             {
                 return BadRequest("Invalid Base64 string for password.");
             }
-
-
             //  开始保存
             SignUp_context.User.Update(user);
             SignUp_context.SaveChanges();
