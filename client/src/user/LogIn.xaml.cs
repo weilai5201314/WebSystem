@@ -86,15 +86,41 @@ public partial class LogIn : Window
             if (response.IsSuccessStatusCode)
             {
                 // 登录成功
-                var successful = response.Content.ReadAsStringAsync().Result;
-                MessageBox.Show(successful, "登录成功2");
-                return true;
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+
+                try
+                {
+                    // 解析json相应
+                    var jsonResponse = JsonConvert.DeserializeObject<JObject>(responseContent);
+                    if (jsonResponse.ContainsKey("token"))
+                    {
+                        // 赋值token给全局变量 LogInToken
+                        UserInfoAll.UserAccount = useraccount;
+                        UserInfoAll.LogInToken = jsonResponse["token"].Value<string>();
+                        return true; // 登录成功
+                    }
+                    else
+                    {
+                        // 服务器返回的 JSON 中没有 token，表示登录失败
+                        var errorResponse = response.Content.ReadAsStringAsync().Result;
+                        MessageBox.Show(errorResponse, "登录失败");
+                        return false;
+                    }
+                }
+                catch (JsonReaderException)
+                {
+                    // 无法解析 JSON，表示登录失败
+                    var errorResponse = response.Content.ReadAsStringAsync().Result;
+                    MessageBox.Show(errorResponse, "登录失败");
+                    // MessageBox.Show("登录失败");
+                    return false;
+                }
             }
-            else
             {
-                // 登录失败
+                // 处理请求失败的情况
                 var errorResponse = response.Content.ReadAsStringAsync().Result;
-                MessageBox.Show(errorResponse, "登录失败2");
+                MessageBox.Show(errorResponse, "登录失败");
+                // MessageBox.Show("登录失败");
                 return false;
             }
         }
