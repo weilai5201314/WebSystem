@@ -104,15 +104,15 @@ namespace server.Controllers.Admin
             if (adminID != -1)
             {
                 //  开始获取被删除用户ID
-                int userID = GetUserIdByAccount(userAccount);
+                // int userID = GetUserIdByAccount(userAccount);
 
                 //  开始获取两个用户的权限，判断是否能删除
                 //  身份组只有3 和 5 才能删除，且3不能删除5
-                bool result1 = CheckAdmin3_Identity(adminID);
-                bool result2 = CheckAdmin5_Identity(userID);
+                // bool result1 = CheckAdmin3_Identity(adminID);
+                // bool result2 = CheckAdmin5_Identity(userID);
                 // bool result2 = new Check(DeleteUserContext).CheckAdmin5_Identity(userID);
-                if (result1 && !result2)
-                    return CheckAdmin3_Identity(adminID);
+                // if (result1 && !result2)
+                return CheckAdmin3_Identity(adminID);
 
                 //  下级尝试删除上级
                 return false;
@@ -129,7 +129,7 @@ namespace server.Controllers.Admin
             // 在这里查询数据库以验证用户的身份
             // 假设 UserUserGroup 表包含用户的身份信息
             var userUserGroupId = ShowinfoContext.UserUsergroup.Where(ug => ug.UserID == adminId);
-        
+
             foreach (var user in userUserGroupId)
             {
                 // 身份ID为3或5表示有效的身份
@@ -138,7 +138,7 @@ namespace server.Controllers.Admin
                     return true;
                 }
             }
-        
+
             return false;
         }
 
