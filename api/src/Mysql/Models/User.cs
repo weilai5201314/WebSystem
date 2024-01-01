@@ -61,4 +61,28 @@
 
         public string ReturnValue { get; set; }
     }
+
+    // Resource 表
+    public class Resource
+    {
+        public int ID { get; set; }
+        public string FileName { get; set; }
+    }
+
+    // Permission 表
+    public class Permission
+    {
+        public int ID { get; set; }
+        public int PermissionCode { get; set; }
+        public string PermissionDescription { get; set; }
+    }
+
+    // UserResourcePermission 表
+    public class UserResourcePermission
+    {
+        public int ID { get; set; }
+        public int UserID { get; set; }
+        public int ResourceID { get; set; }
+        public int PermissionID { get; set; }
+    }
 }

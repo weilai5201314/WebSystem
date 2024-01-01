@@ -52,12 +52,12 @@ app.Use(async (context, next) =>
 
 
     var path = context.Request.Path.Value;
-    if ((path == "/Api/user/SignUp" || path == "/Api/user/SignUp2" || path == "/Api/user/LogIn" ||
-         path == "/Api/user/LogIn2" || path == "/Api/user/RevertPass") &&
-        (context.Request.Method == "POST" || context.Request.Method == "PUT"))
+    // if ((path == "/Api/user/SignUp" || path == "/Api/user/SignUp2" || path == "/Api/user/LogIn" ||
+    //      path == "/Api/user/LogIn2" || path == "/Api/user/RevertPass") &&
+    //     (context.Request.Method == "POST" || context.Request.Method == "PUT"))
 
-        // 测试专用判断条件
-        // if (path != "/Api")
+    // 测试专用判断条件
+    if (path != "/Api")
     {
         await next.Invoke();
         return;
