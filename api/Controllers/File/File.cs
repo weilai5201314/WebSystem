@@ -21,13 +21,7 @@ namespace server.Controllers.File
 
        
 
-        [HttpPost("WriteFile")]
-        public IActionResult WriteFile([FromBody] FileAccessRequest request)
-        {
-            // 处理写文件的逻辑
-            return Ok($"Writing file: {request.ObjectName1}");
-        }
-
+       
         [HttpPost("ReadWriteFile")]
         public IActionResult ReadWriteFile([FromBody] FileAccessRequest request)
         {
