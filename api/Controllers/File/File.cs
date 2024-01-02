@@ -19,12 +19,7 @@ namespace server.Controllers.File
             return Ok($"Deleting file: {request.ObjectName1}");
         }
 
-        [HttpPost("ReadFile")]
-        public IActionResult ReadFile([FromBody] FileAccessRequest request)
-        {
-            // 处理读文件的逻辑
-            return Ok($"Reading file: {request.ObjectName1}");
-        }
+       
 
         [HttpPost("WriteFile")]
         public IActionResult WriteFile([FromBody] FileAccessRequest request)

@@ -23,6 +23,12 @@ public partial class Api
                     "Invalid username");
                 return BadRequest("Invalid username");
             }
+            
+            //---------------------------------------------------强制访问控制---------------------------------------------------//
+            //  判断用户是否有访问类来创建文件
+            
+            //---------------------------------------------------强制访问控制---------------------------------------------------//
+
 
 
             // 验证文件名是否已存在
@@ -36,9 +42,11 @@ public partial class Api
             // 创建文件
             var newFile = CreateFile(request.ObjectName1);
 
+            //---------------------------------------------------自主访问控制---------------------------------------------------//
             // 为文件拥有者添加Owner权限
-            // 6 表示Owner权限
-            GrantPermission(user.ID, newFile.ID, 6);
+            // 4 表示Owner权限
+            GrantPermission(user.ID, newFile.ID, 4);
+            //---------------------------------------------------自主访问控制---------------------------------------------------//
 
 
             TypeLog(request.UserName, "AddFile", true, $"FileName:{request.ObjectName1}", true,
@@ -88,13 +96,13 @@ public partial class Api
 
     //  为用户和文件添加权限，返回是否添加成功
     //  内置Log，无需编写
-    private void GrantPermission(int ownerId, int fileId, int permissioncode)
+    private void GrantPermission(int ownerId, int fileId, int permissionCode)
     {
         try
         {
             // 查询Owner权限ID
             int ownerPermissionId = DbContext.Permission
-                .Where(p => p.PermissionCode == permissioncode)
+                .Where(p => p.PermissionCode == permissionCode)
                 .Select(p => p.ID)
                 .FirstOrDefault(); // 防止空异常
 
@@ -117,7 +125,7 @@ public partial class Api
             DbContext.UserResourcePermission.Add(newFilePermission);
             DbContext.SaveChanges();
 
-            TypeLog("System", "GrantOwnerPermission", true, $"{ownerId} {fileId} {permissioncode}"
+            TypeLog("System", "GrantOwnerPermission", true, $"{ownerId} {fileId} {permissionCode}"
                 , true, $"Owner permission granted successfully for file ID '{fileId}'");
         }
         catch (Exception ex)
