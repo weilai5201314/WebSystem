@@ -46,7 +46,7 @@ public partial class Api
             //  目前还没开始写
             //---------------------------------------------------强制访问控制---------------------------------------------------//
 
-            string filePath = Path.Combine("D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\Data", request.ObjectName1);
+            string filePath = Path.Combine(DirectoryPath, request.ObjectName1);
             string fileContent = System.IO.File.ReadAllText(filePath);
             TypeLog(request.UserName, "ReadFile", true, $"FileName:{request.ObjectName1}", true,
                 "successfully read file");

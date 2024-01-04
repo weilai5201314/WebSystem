@@ -49,7 +49,7 @@ public partial class Api
             //  目前还没开始写
             //---------------------------------------------------强制访问控制---------------------------------------------------//
             // 获取文件路径
-            string filePath = Path.Combine("D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\Data", request.ObjectName1);
+            string filePath = Path.Combine(DirectoryPath, request.ObjectName1);
 
             // 写入文件
             System.IO.File.AppendAllText(filePath, request.Text+Environment.NewLine);

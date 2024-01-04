@@ -77,8 +77,8 @@ public partial class Api
     private Resource CreateFile(string fileName)
     {
         // 创建文件，保存到磁盘上
-        string fileDirectory = "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\Data";
-        string filePath = Path.Combine(fileDirectory, fileName);
+        // string fileDirectory = "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\Data";
+        string filePath = Path.Combine(DirectoryPath, fileName);
         System.IO.File.Create(filePath).Close();
 
 
