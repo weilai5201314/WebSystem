@@ -12,13 +12,6 @@ namespace server.Controllers.File
             return Ok("Hello,File!");
         }
 
-        [HttpPost("DeleteFile")]
-        public IActionResult DeleteFile([FromBody] FileAccessRequest request)
-        {
-            // 处理删除文件的逻辑
-            return Ok($"Deleting file: {request.ObjectName1}");
-        }
-
        
 
        

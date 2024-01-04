@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using server.Controllers.File;
-using server.Mysql.Models;
 
 namespace server.Controllers;
 
