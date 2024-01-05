@@ -29,7 +29,7 @@ D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\client.cspr
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\user\LogIn.baml
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\admin\ShowDaily.g.cs
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\admin\ShowInfo.g.cs
-D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\File\FileControl.g.cs
+D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\file\fileControl.g.cs
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\MainWindow.g.cs
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\user\LogIn.g.cs
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\user\RevertPass.g.cs
@@ -39,7 +39,7 @@ D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\client_Mark
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\client_MarkupCompile.lref
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\admin\ShowDaily.baml
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\admin\ShowInfo.baml
-D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\File\FileControl.baml
+D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\file\fileControl.baml
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\MainWindow.baml
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\user\RevertPass.baml
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\user\SignUp.baml

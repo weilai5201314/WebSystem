@@ -85,7 +85,7 @@
         <!-- 读取文件的按钮 -->
         <Canvas>
             <Button Content="增加" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
-                    Canvas.Left="360" Canvas.Top="90" />
+                    Canvas.Left="360" Canvas.Top="90" Click="Button_CreateFile" />
             <Button Content="删除" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="500" Canvas.Top="90" />
             <Button Content="读" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"

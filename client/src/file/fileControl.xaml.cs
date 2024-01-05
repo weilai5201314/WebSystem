@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using client.user;
+using Microsoft.Win32;
 
 namespace client.file
 {
@@ -25,8 +27,8 @@ namespace client.file
                 var requestData = new
                 {
                     userName = LogIn.UserInfoAll.UserAccount,
-                    objectName1 = "string",
-                    objectName2 = "string",
+                    objectName1 = "string.txt",
+                    objectName2 = "string.txt",
                     action = "string",
                     text = "string"
                 };
@@ -58,6 +60,57 @@ namespace client.file
             catch (Exception ex)
             {
                 MessageBox.Show($"Error initializing file list: {ex.Message}");
+            }
+        }
+
+        private void Button_CreateFile(object sender, RoutedEventArgs e)
+        {
+            // 选择txt文件
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = "选择文件",
+                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName; // 获取文件绝对路径
+                string fileName = Path.GetFileName(filePath); // 获取文件名
+                string fileContent = File.ReadAllText(filePath); // 获取文件文本内容
+                // 构建请求数据
+                var requestData = new
+                {
+                    UserName = LogIn.UserInfoAll.UserAccount,
+                    ObjectName1 = fileName,
+                    ObjectName2 = "string.txt",
+                    Action = "string",
+                    Text = fileContent 
+                };
+
+                // 发起请求，处理返回结果
+                var response = PostRequest("http://localhost:5009/Api/File/AddFile", requestData);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    MessageBox.Show(result);
+                }
+                else
+                {
+                    MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                }
+            }
+        }
+
+
+        private HttpResponseMessage PostRequest(string url, object requestData)
+        {
+            using (var client = new HttpClient())
+            {
+                // 添加请求头，附加 token
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + LogIn.UserInfoAll.LogInToken);
+                var requestDataJson = JsonConvert.SerializeObject(requestData);
+                var content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+                // 发送请求
+                return client.PostAsync(url, content).Result;
             }
         }
     }

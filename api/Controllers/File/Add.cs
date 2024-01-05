@@ -40,7 +40,7 @@ public partial class Api
             }
 
             // 创建文件
-            var newFile = CreateFile(request.ObjectName1);
+            var newFile = CreateFile(request.ObjectName1,request.Text);
             
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //---------------------------------------------------自主访问控制---------------------------------------------------//
@@ -74,13 +74,11 @@ public partial class Api
 
     //  在磁盘创建文件，并保存文件名进数据库
     //  无Log，自行编写
-    private Resource CreateFile(string fileName)
+    private Resource CreateFile(string fileName,string fileText)
     {
         // 创建文件，保存到磁盘上
-        // string fileDirectory = "D:\\zzz\\school\\InfoSecurity\\WebSystem\\api\\Data";
         string filePath = Path.Combine(DirectoryPath, fileName);
-        System.IO.File.Create(filePath).Close();
-
+        System.IO.File.WriteAllText(filePath, fileText);
 
         var newFile = new Resource
         {
