@@ -83,7 +83,7 @@ namespace client.file
                     ObjectName1 = fileName,
                     ObjectName2 = "string.txt",
                     Action = "string",
-                    Text = fileContent 
+                    Text = fileContent
                 };
 
                 // 发起请求，处理返回结果
@@ -100,7 +100,52 @@ namespace client.file
             }
         }
 
+        // 删除文件
+        // 删除文件
+        private async void Button_DeleteFile(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 获取下拉框中的文件名
+                string selectedFileName = FileComboBox.SelectedItem as string;
+                if (string.IsNullOrEmpty(selectedFileName))
+                {
+                    MessageBox.Show("Please select a file to delete.");
+                    return;
+                }
 
+                // 构建请求数据
+                var requestData = new
+                {
+                    userName = LogIn.UserInfoAll.UserAccount,
+                    objectName1 = selectedFileName,
+                    objectName2 = "string.txt",
+                    action = "string",
+                    text = "string"
+                };
+
+                // 发起请求，处理返回结果
+                var response = PostRequest("http://localhost:5009/Api/File/DeleteFile", requestData);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(result);
+                }
+                else
+                {
+                    string errorResult = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(errorResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting file: {ex.Message}");
+            }
+        }
+
+
+        // 附加token请求头，发起请求，传入 url 和 request请求 集合就行
         private HttpResponseMessage PostRequest(string url, object requestData)
         {
             using (var client = new HttpClient())
