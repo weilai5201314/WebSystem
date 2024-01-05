@@ -89,7 +89,7 @@
             <Button Content="删除" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="500" Canvas.Top="90" Click="Button_DeleteFile" />
             <Button Content="读" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
-                    Canvas.Left="360" Canvas.Top="190" />
+                    Canvas.Left="360" Canvas.Top="190" Click="Button_ReadFile" />
             <Button Content="写" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="500" Canvas.Top="190" />
             <Button Content="读写" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
