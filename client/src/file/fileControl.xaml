@@ -91,9 +91,9 @@
             <Button Content="读" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="360" Canvas.Top="190" Click="Button_ReadFile" />
             <Button Content="写" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
-                    Canvas.Left="500" Canvas.Top="190" />
+                    Canvas.Left="500" Canvas.Top="190" Click="Button_WriteFile"/>
             <Button Content="读写" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
-                    Canvas.Left="360" Canvas.Top="290" />
+                    Canvas.Left="360" Canvas.Top="290" Click="Button_ReadAndWrite" />
             <Button Content="*/Copy" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="500" Canvas.Top="290" />
         </Canvas>

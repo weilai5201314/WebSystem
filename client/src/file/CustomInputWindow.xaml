@@ -1,0 +1,14 @@
+﻿<Window x:Class="client.file.CustomInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:client.file"
+        mc:Ignorable="d"
+        Title="CustomInputWindow" Height="200" Width="400" Background="Bisque">
+    <Grid>
+        <TextBlock x:Name="CurrentContentTextBlock" Margin="10" Height="30" Width="200" TextWrapping="Wrap" />
+        <TextBox x:Name="InputTextBox" Margin="5"  Height="30" Width="200" VerticalAlignment="Center" HorizontalAlignment="Stretch" AcceptsReturn="True" TextWrapping="Wrap" />
+        <Button Content="确定" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="80" Height="30" Click="ConfirmButton_Click" />
+    </Grid>
+</Window>

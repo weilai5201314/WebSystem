@@ -4,6 +4,7 @@ using System.Windows;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System.Threading.Tasks;
 using client.user;
 using Microsoft.Win32;
 
@@ -186,6 +187,138 @@ namespace client.file
             catch (Exception ex)
             {
                 MessageBox.Show($"Error reading file: {ex.Message}");
+            }
+        }
+
+        //  写文件
+        // 写入文件
+        private async void Button_WriteFile(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 获取选中的文件名
+                string selectedFileName = FileComboBox.SelectedItem as string;
+
+                if (string.IsNullOrEmpty(selectedFileName))
+                {
+                    MessageBox.Show("Please select a file to write.");
+                    return;
+                }
+
+                // 弹出窗口让用户输入内容
+                string userInput =
+                    Microsoft.VisualBasic.Interaction.InputBox("Enter text to write:", "Write to File", "");
+
+                // 构建请求数据
+                var requestData = new
+                {
+                    userName = LogIn.UserInfoAll.UserAccount,
+                    objectName1 = selectedFileName,
+                    objectName2 = "string.txt",
+                    action = "string",
+                    text = userInput
+                };
+
+                // 发起请求，处理返回结果
+                var response = PostRequest("http://localhost:5009/Api/File/WriteFile", requestData);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("File written successfully");
+                }
+                else
+                {
+                    string errorResult = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(errorResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error writing to file: {ex.Message}");
+            }
+        }
+
+        // 读写文件
+        private async void Button_ReadAndWrite(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 获取选中的文件名
+                string? selectedFileName = FileComboBox.SelectedItem as string;
+
+                if (string.IsNullOrEmpty(selectedFileName))
+                {
+                    MessageBox.Show("请选择要读取和写入的文件。");
+                    return;
+                }
+
+                // 发起读取文件的请求
+                var readResponse = await GetFileContent(selectedFileName);
+
+                if (readResponse != null)
+                {
+                    // 读取文件内容
+                    string? currentContent = readResponse;
+                    // 使用 InputBox 显示当前内容并允许用户输入新文本
+                    string userInput =
+                        Microsoft.VisualBasic.Interaction.InputBox("当前内容：\n\n" + currentContent + "\n\n请输入新文本:", "写入文件",
+                            currentContent);
+                    // 发起写文件的请求
+                    var writeResponse = WriteFile(selectedFileName, userInput);
+                    if (writeResponse.Result)
+                        MessageBox.Show("文件读取并成功写入。");
+                    else
+                        MessageBox.Show($"写入文件时出错");
+                }
+                else
+                    MessageBox.Show($"从文件读取时出错");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"读取和写入文件时出错：{ex.Message}");
+            }
+        }
+
+        private async Task<string?> GetFileContent(string? selectedFileName)
+        {
+            // 构建请求数据
+            var requestData = new
+            {
+                userName = LogIn.UserInfoAll.UserAccount,
+                objectName1 = selectedFileName,
+                objectName2 = "string.txt",
+                action = "string",
+                text = "string"
+            };
+            // 发起请求，处理返回结果
+            var response = PostRequest("http://localhost:5009/Api/File/ReadFile", requestData);
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadAsStringAsync();
+            return null;
+        }
+
+        private async Task<bool> WriteFile(string fileName, string text)
+        {
+            try
+            {
+                // 构建请求数据
+                var requestData = new
+                {
+                    userName = LogIn.UserInfoAll.UserAccount,
+                    objectName1 = fileName,
+                    objectName2 = "string.txt",
+                    action = "string",
+                    Text = text
+                };
+                // 发起请求，处理返回结果
+                var response = PostRequest("http://localhost:5009/Api/File/CoverFile", requestData);
+                if (response.IsSuccessStatusCode)
+                    return true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
