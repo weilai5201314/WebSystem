@@ -31,7 +31,7 @@ namespace client.file
                     userName = LogIn.UserInfoAll.UserAccount,
                     objectName1 = "string.txt",
                     objectName2 = "string.txt",
-                    action = "string",
+                    action = 1,
                     text = "string"
                 };
                 // 将请求数据转为 JSON 字符串
@@ -85,7 +85,7 @@ namespace client.file
                     UserName = LogIn.UserInfoAll.UserAccount,
                     ObjectName1 = fileName,
                     ObjectName2 = "string.txt",
-                    Action = "string",
+                    Action = 0,
                     Text = fileContent
                 };
 
@@ -123,7 +123,7 @@ namespace client.file
                     userName = LogIn.UserInfoAll.UserAccount,
                     objectName1 = selectedFileName,
                     objectName2 = "string.txt",
-                    action = "string",
+                    action = 0,
                     text = "string"
                 };
 
@@ -166,7 +166,7 @@ namespace client.file
                     userName = LogIn.UserInfoAll.UserAccount,
                     objectName1 = selectedFileName,
                     objectName2 = "string.txt",
-                    action = "string",
+                    action = 0,
                     text = "string"
                 };
 
@@ -215,7 +215,7 @@ namespace client.file
                     userName = LogIn.UserInfoAll.UserAccount,
                     objectName1 = selectedFileName,
                     objectName2 = "string.txt",
-                    action = "string",
+                    action = 0,
                     text = userInput
                 };
 
@@ -287,7 +287,7 @@ namespace client.file
                 userName = LogIn.UserInfoAll.UserAccount,
                 objectName1 = selectedFileName,
                 objectName2 = "string.txt",
-                action = "string",
+                action = 0,
                 text = "string"
             };
             // 发起请求，处理返回结果
@@ -307,7 +307,7 @@ namespace client.file
                     userName = LogIn.UserInfoAll.UserAccount,
                     objectName1 = fileName,
                     objectName2 = "string.txt",
-                    action = "string",
+                    action = 0,
                     Text = text
                 };
                 // 发起请求，处理返回结果

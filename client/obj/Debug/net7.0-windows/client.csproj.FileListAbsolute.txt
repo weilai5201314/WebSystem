@@ -56,3 +56,5 @@ D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\client.genr
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\ref\client.dll
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\file\CustomInputWindow.g.cs
 D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\file\CustomInputWindow.baml
+D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\admin\AlterFileAuth.g.cs
+D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\src\admin\AlterFileAuth.baml

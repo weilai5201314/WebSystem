@@ -46,7 +46,7 @@ namespace server.Controllers.File
                 "ObjectName2 should be a filename with up to 30 alphanumeric characters ending with '.txt'.")]
         public string ObjectName2 { get; set; }
 
-        public string Action { get; set; }
+        public int Action { get; set; }
 
         [MaxLength(100, ErrorMessage = "Text can have a maximum length of 100 characters.")]
         public string Text { get; set; }

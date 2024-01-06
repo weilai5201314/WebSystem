@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using server.Controllers.File;
-using server.Mysql.Models;
 
 namespace server.Controllers;
 
@@ -34,16 +33,13 @@ public partial class Api
             }
 
             // 验证文件名是否存在
-            if (!FileExists(request.FileName))
+            var newFile = DbContext.Resource.FirstOrDefault(f => f.FileName == request.FileName);
+            if (newFile == null)
             {
                 TypeLog(request.UserName, "UpdateFilePermission", true, $"FileName:{request.FileName}", false,
                     "File isn't exists");
                 return Ok($"File '{request.FileName}' isn't exists");
             }
-
-            var newFile = DbContext.Resource.FirstOrDefault(f => f.FileName == request.FileName);
-            if (newFile == null)
-                return BadRequest("File isn't exists");
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //---------------------------------------------------自主访问控制---------------------------------------------------//
@@ -59,6 +55,12 @@ public partial class Api
                 if (request.Action == 2)
                     DeletePermission(alterUser.ID, newFile.ID, request.Permission);
             }
+            else
+            {
+                TypeLog(request.UserName, "UpdateFilePermission", true, $"FileName:{request.FileName}", false,
+                    "You dont owner file");
+                return Ok("You dont owner file ");
+            }
             //---------------------------------------------------自主访问控制---------------------------------------------------//
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -73,7 +75,7 @@ public partial class Api
             return StatusCode(500, $"Error adding file: {ex.Message}");
         }
     }
-    
+
     // 删除用户对文件的权限，返回是否删除成功
     // 内置Log，无需编写
     private bool DeletePermission(int ownerId, int fileId, int permissionCode)
@@ -109,13 +111,11 @@ public partial class Api
                     , true, $"Owner permission deleted successfully for file ID '{fileId}'");
                 return true;
             }
-            else
-            {
-                // 如果未找到要删除的记录，记录错误的日志并返回失败
-                TypeLog("System", "DeleteOwnerPermission", true, $"Permission record not found for deletion", false,
-                    $"Permission record not found for deletion");
-                return false;
-            }
+
+            // 如果未找到要删除的记录，记录错误的日志并返回失败
+            TypeLog("System", "DeleteOwnerPermission", true, $"Permission record not found for deletion", false,
+                $"Permission record not found for deletion");
+            return false;
         }
         catch (Exception ex)
         {
