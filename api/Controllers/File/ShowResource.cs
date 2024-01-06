@@ -40,45 +40,31 @@ public partial class Api
                     .ToList();
             }
 
-            //  如果  action 3,获取关联表信息，以拥有4权限的文件为筛选条件
-            // if (request.Action == 3)
-            // {
-            //     // 获取当前用户拥有的所有文件
-            //     var userFiles = DbContext.UserResourcePermission
-            //         .Where(urp => urp.UserID == user.ID)
-            //         .Join(DbContext.Resource,
-            //             urp => urp.ResourceID,
-            //             resource => resource.ID,
-            //             (urp, resource) => new
-            //             {
-            //                 UserAccount = user.Account,
-            //                 FileName = resource.FileName
-            //             })
-            //         .ToList();
-            //
-            //     // 获取其他用户对这些文件的权限信息
-            //     var otherUsersPermissions = DbContext.UserResourcePermission
-            //         .Where(urp => userFiles.Select(uf => uf.FileName).Contains(urp.Resource.FileName) && urp.UserID != user.ID)
-            //         .Join(DbContext.User,
-            //             urp => urp.UserID,
-            //             otherUser => otherUser.ID,
-            //             (urp, otherUser) => new
-            //             {
-            //                 UserAccount = otherUser.Account,
-            //                 FileName = urp.Resource.FileName,
-            //                 PermissionDescription = urp.Permission.PermissionDescription
-            //             })
-            //         .ToList();
-            //
-            //     // 将结果赋值给 fileInfo，这里 fileInfo 的类型需要调整为 List<你的结果类的类型>
-            //     fileInfo = otherUsersPermissions.Select(r => new YourResultClass
-            //     {
-            //         UserAccount = r.UserAccount,
-            //         FileName = r.FileName,
-            //         PermissionDescription = r.PermissionDescription
-            //     }).ToList();
-            // }
+            // 如果 action 3，获取关联表信息，以拥有 6 权限 ID 的文件为筛选条件
+            if (request.Action == 3)
+            {
+                // 获取当前用户 ID
+                var currentUser = DbContext.User.FirstOrDefault(u => u.Account == request.UserName);
+                if (currentUser != null)
+                {
+                    int currentUserId = currentUser.ID;
 
+                    // 执行 LINQ 查询
+                    var result = (from urp in DbContext.UserResourcePermission
+                        where urp.ResourceID == (from inner in DbContext.UserResourcePermission
+                                  where inner.UserID == currentUserId && inner.PermissionID == 6
+                                  select inner.ResourceID).FirstOrDefault()
+                              && urp.UserID != currentUserId
+                        join u in DbContext.User on urp.UserID equals u.ID
+                        join r in DbContext.Resource on urp.ResourceID equals r.ID
+                        join p in DbContext.Permission on urp.PermissionID equals p.ID
+                        select new { u.Account, r.FileName, p.PermissionCode }).ToList();
+
+                    TypeLog(request.UserName, "ShowFile", true, $"Name:{request.UserName}",
+                        true, "action3.");
+                    return Ok(result);
+                }
+            }
 
 
             bool successful = fileInfo is { Count: > 0 };
