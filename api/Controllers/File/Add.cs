@@ -23,12 +23,11 @@ public partial class Api
                     "Invalid username");
                 return BadRequest("Invalid username");
             }
-            
+
             //---------------------------------------------------强制访问控制---------------------------------------------------//
             //  判断用户是否有访问类来创建文件
-            
-            //---------------------------------------------------强制访问控制---------------------------------------------------//
 
+            //---------------------------------------------------强制访问控制---------------------------------------------------//
 
 
             // 验证文件名是否已存在
@@ -40,13 +39,13 @@ public partial class Api
             }
 
             // 创建文件
-            var newFile = CreateFile(request.ObjectName1,request.Text);
-            
+            var newFile = CreateFile(request.ObjectName1, request.Text);
+
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //---------------------------------------------------自主访问控制---------------------------------------------------//
             // 为文件拥有者添加Owner权限
             // 4 表示Owner权限
-            GrantPermission(user.ID, newFile.ID, 4);
+            bool result = GrantPermission(user.ID, newFile.ID, 4);
             //---------------------------------------------------自主访问控制---------------------------------------------------//
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -96,7 +95,7 @@ public partial class Api
 
     //  为用户和文件添加权限，返回是否添加成功
     //  内置Log，无需编写
-    private void GrantPermission(int ownerId, int fileId, int permissionCode)
+    private bool GrantPermission(int ownerId, int fileId, int permissionCode)
     {
         try
         {
@@ -109,9 +108,9 @@ public partial class Api
             if (ownerPermissionId == 0)
             {
                 // 如果未找到Owner权限ID，记录错误的日志并返回失败
-                TypeLog("System", "AddFile/GrantOwnerPermission", true, "Error finding Owner permission ID", false,
+                TypeLog("System", "GrantOwnerPermission", true, "Error finding Owner permission ID", false,
                     "Error finding Owner permission ID");
-                return;
+                return false;
             }
 
             // 在关联表中添加Owner权限记录
@@ -127,12 +126,14 @@ public partial class Api
 
             TypeLog("System", "GrantOwnerPermission", true, $"{ownerId} {fileId} {permissionCode}"
                 , true, $"Owner permission granted successfully for file ID '{fileId}'");
+            return true;
         }
         catch (Exception ex)
         {
             // 记录错误的日志
-            TypeLog("System", "AddFile/GrantOwnerPermission", false, $"Error granting Owner permission: {ex.Message}",
+            TypeLog("System", "GrantOwnerPermission", false, $"Error granting Owner permission: {ex.Message}",
                 false, $"{ex.Message}");
+            return false;
         }
     }
 }
