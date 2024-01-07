@@ -49,12 +49,11 @@ public partial class Api
                 {
                     int currentUserId = currentUser.ID;
 
-                    // 执行 LINQ 查询
+                    // 执行查询
                     var result = (from urp in DbContext.UserResourcePermission
                         where urp.ResourceID == (from inner in DbContext.UserResourcePermission
-                                  where inner.UserID == currentUserId && inner.PermissionID == 6
-                                  select inner.ResourceID).FirstOrDefault()
-                              && urp.UserID != currentUserId
+                            where inner.UserID == currentUserId && inner.PermissionID == 6
+                            select inner.ResourceID).FirstOrDefault() && urp.UserID != currentUserId
                         join u in DbContext.User on urp.UserID equals u.ID
                         join r in DbContext.Resource on urp.ResourceID equals r.ID
                         join p in DbContext.Permission on urp.PermissionID equals p.ID
@@ -65,6 +64,10 @@ public partial class Api
                     return Ok(result);
                 }
             }
+
+            // 展示最基础的用户列表
+            if (request.Action == 4)
+                fileInfo = DbContext.User.Select(i => i.Account).ToList();  
 
 
             bool successful = fileInfo is { Count: > 0 };

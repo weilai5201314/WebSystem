@@ -48,7 +48,7 @@ namespace client
             };
             newWindow.Show();
         }
-        
+
         //  前往找回密码页面
         private void ToRevertPass(object sender, RoutedEventArgs e)
         {
@@ -67,7 +67,6 @@ namespace client
 
         private void Button_LogOut(object sender, RoutedEventArgs e)
         {
-            
             LogIn newWindow = new LogIn();
             newWindow.Show();
             GetWindow(this)?.Close();
@@ -77,10 +76,15 @@ namespace client
         {
             fileControl newWindow = new fileControl();
             IsEnabled = false;
-            newWindow.Closed += (sender, e) =>
-            {
-                IsEnabled = true;
-            };
+            newWindow.Closed += (sender, e) => { IsEnabled = true; };
+            newWindow.Show();
+        }
+
+        private void JumpFileAdmin(object sender, RoutedEventArgs e)
+        {
+            AlterFileAuth newWindow = new AlterFileAuth();
+            IsEnabled = false;
+            newWindow.Closed += (sender, e) => { IsEnabled = true; };
             newWindow.Show();
         }
     }

@@ -73,7 +73,7 @@ public partial class Api
 
     //  在磁盘创建文件，并保存文件名进数据库
     //  无Log，自行编写
-    private Resource CreateFile(string fileName,string fileText)
+    private Resource CreateFile(string fileName, string fileText)
     {
         // 创建文件，保存到磁盘上
         string filePath = Path.Combine(DirectoryPath, fileName);
@@ -110,6 +110,19 @@ public partial class Api
                 // 如果未找到Owner权限ID，记录错误的日志并返回失败
                 TypeLog("System", "GrantOwnerPermission", true, "Error finding Owner permission ID", false,
                     "Error finding Owner permission ID");
+                return false;
+            }
+
+            // 查询是否已经存在此权限
+            bool permissionExists = DbContext.UserResourcePermission
+                .Any(urp => urp.UserID == ownerId && urp.ResourceID == fileId && urp.PermissionID == ownerPermissionId);
+
+            if (permissionExists)
+            {
+                // 如果权限已经存在，记录日志并返回失败
+                TypeLog("System", "GrantOwnerPermission", true,
+                    $"Permission already exists for user '{ownerId}' and file '{fileId}'", false,
+                    $"Permission already exists for user '{ownerId}' and file '{fileId}'");
                 return false;
             }
 

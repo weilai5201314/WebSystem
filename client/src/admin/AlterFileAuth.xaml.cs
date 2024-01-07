@@ -1,4 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Windows;
+using client.user;
+using Newtonsoft.Json;
 
 namespace client.admin;
 
@@ -6,6 +12,172 @@ public partial class AlterFileAuth : Window
 {
     public AlterFileAuth()
     {
+        InitializeComponent();
+
+        InitializePermissionBox();
+        InitializeFileBox();
+        InitializeUserBox();
+    }
+
+    private async void InitializePermissionBox()
+    {
+        try
+        {
+            // 构建请求数据
+            var requestData = new
+            {
+                userName = LogIn.UserInfoAll.UserAccount,
+                objectName1 = "string.txt",
+                objectName2 = "string.txt",
+                action = 3,
+                text = "string"
+            };
+
+            // 将请求数据转为 JSON 字符串
+            var requestDataJson = JsonConvert.SerializeObject(requestData);
+
+            // 构建 HTTP 请求内容
+            var content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+            // 构建 HTTP 客户端请求
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + LogIn.UserInfoAll.LogInToken);
+
+            // 发起 POST 请求获取文件列表
+            var response = await httpClient.PostAsync("http://localhost:5009/Api/File/ShowFile", content);
+
+            // 检查请求是否成功
+            if (response.IsSuccessStatusCode)
+            {
+                // 读取响应内容
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                // 将返回的 JSON 字符串解析成对象列表
+                var permissionList = JsonConvert.DeserializeObject<List<PermissionResponse>>(responseContent);
+
+                // 将对象列表添加到 DataGrid
+                // PermissionDataGrid.ItemsSource = permissionList;
+                foreach (var permission in permissionList)
+                {
+                    PermissionDataGrid.Items.Add(new
+                    {
+                        User = permission.Account,
+                        ilename = permission.FileName,
+                        ermission = permission.PermissionCode
+                    });
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error initializing file list.");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error initializing file list: {ex.Message}");
+        }
+    }
+
+
+    private async void InitializeFileBox()
+    {
+        try
+        {
+            // 构建请求数据
+            var requestData = new
+            {
+                userName = LogIn.UserInfoAll.UserAccount,
+                objectName1 = "string.txt",
+                objectName2 = "string.txt",
+                action = 2,
+                text = "string"
+            };
+            // 将请求数据转为 JSON 字符串
+            var requestDataJson = JsonConvert.SerializeObject(requestData);
+            // 构建 HTTP 请求内容
+            var content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+            // 构建 HTTP 客户端请求
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + LogIn.UserInfoAll.LogInToken);
+            // 发起 POST 请求获取文件列表
+            var response = await httpClient.PostAsync("http://localhost:5009/Api/File/ShowFile", content);
+            // 检查请求是否成功
+            if (response.IsSuccessStatusCode)
+            {
+                // 读取响应内容
+                var responseContent = await response.Content.ReadAsStringAsync();
+                // 将返回的 JSON 字符串解析成文件列表
+                var fileList = JsonConvert.DeserializeObject<string[]>(responseContent);
+                // 将文件列表添加到 ComboBox
+                foreach (var fileName in fileList)
+                    FileComboBox.Items.Add(fileName);
+            }
+            else
+            {
+                MessageBox.Show("Error initializing file list.");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error initializing file list: {ex.Message}");
+        }
+    }
+
+    private async void InitializeUserBox()
+    {
+        try
+        {
+            // 构建请求数据
+            var requestData = new
+            {
+                userName = LogIn.UserInfoAll.UserAccount,
+                objectName1 = "string.txt",
+                objectName2 = "string.txt",
+                action = 4,
+                text = "string"
+            };
+            // 将请求数据转为 JSON 字符串
+            var requestDataJson = JsonConvert.SerializeObject(requestData);
+            // 构建 HTTP 请求内容
+            var content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+            // 构建 HTTP 客户端请求
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + LogIn.UserInfoAll.LogInToken);
+            // 发起 POST 请求获取文件列表
+            var response = await httpClient.PostAsync("http://localhost:5009/Api/File/ShowFile", content);
+            // 检查请求是否成功
+            if (response.IsSuccessStatusCode)
+            {
+                // 读取响应内容
+                var responseContent = await response.Content.ReadAsStringAsync();
+                // 将返回的 JSON 字符串解析成文件列表
+                var fileList = JsonConvert.DeserializeObject<string[]>(responseContent);
+                // 将文件列表添加到 ComboBox
+                foreach (var fileName in fileList)
+                    UserComboBox.Items.Add(fileName);
+            }
+            else
+            {
+                MessageBox.Show("Error initializing file list.");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error initializing file list: {ex.Message}");
+        }
+    }
+
+    public class PermissionResponse
+    {
+        public string Account { get; set; }
+        public string FileName { get; set; }
+        public int PermissionCode { get; set; }
+    }
+
+    private void Button_FlushAll(object sender, RoutedEventArgs e)
+    {
+        InitializeFileBox();
+        InitializePermissionBox();
         InitializeComponent();
     }
 }

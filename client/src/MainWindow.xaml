@@ -109,7 +109,7 @@
                     Canvas.Left="120" Canvas.Top="190" Click="JumpFileControl" />
             
             <Button Content="文件管理" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
-                    Canvas.Left="260" Canvas.Top="190"  />
+                    Canvas.Left="260" Canvas.Top="190" Click="JumpFileAdmin" />
             
             
             <Button Content="管理用户" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"

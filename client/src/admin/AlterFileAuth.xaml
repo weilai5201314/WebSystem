@@ -58,9 +58,9 @@
             <DataGrid x:Name="PermissionDataGrid" Height="300" AutoGenerateColumns="False"
                       ItemsSource="{Binding Permissions}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="User" Binding="{Binding UserAccount}" Width="*" />
-                    <DataGridTextColumn Header="FileName" Binding="{Binding Filename}" Width="*" />
-                    <DataGridTextColumn Header="Permission" Binding="{Binding PermissionDescription}" Width="*" />
+                    <DataGridTextColumn Header="User" Binding="{Binding User}" Width="*" />
+                    <DataGridTextColumn Header="FileName" Binding="{Binding ilename}" Width="*" />
+                    <DataGridTextColumn Header="Permission" Binding="{Binding ermission}" Width="*" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
@@ -78,15 +78,15 @@
 
         <!-- 修改权限按钮 -->
         <Button Content="刷新页面" Style="{StaticResource ButtonMainGreen}" Width="140" Height="50"
-                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,10,230" />
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,10,230" Click="Button_FlushAll" />
         <Button Content="删除权限" Style="{StaticResource ButtonMainGreen}" Width="140" Height="50"
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="250,0,10,230" />
 
         <Button Content="增加读权限" Style="{StaticResource ButtonMainPurple}" Width="140" Height="50"
-                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,150" />
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,130" />
 
         <Button Content="增加写权限" Style="{StaticResource ButtonMainPurple}" Width="140" Height="50"
-                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,70" />
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,30" />
 
     </Grid>
 </Window>
