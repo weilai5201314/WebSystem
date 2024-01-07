@@ -113,9 +113,11 @@ public partial class Api
                 return false;
             }
 
-            // 查询是否已经存在此权限
+            // 查询是否已经存在此权限,如果有 拥有权，等于拥有所有权限
             bool permissionExists = DbContext.UserResourcePermission
-                .Any(urp => urp.UserID == ownerId && urp.ResourceID == fileId && urp.PermissionID == ownerPermissionId);
+                .Any(urp => urp.UserID == ownerId
+                            && urp.ResourceID == fileId
+                            && (urp.PermissionID == ownerPermissionId || urp.PermissionID == 6));
 
             if (permissionExists)
             {

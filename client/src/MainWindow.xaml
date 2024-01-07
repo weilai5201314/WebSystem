@@ -107,17 +107,17 @@
             <!-- 设置页面按钮 -->
             <Button Content="文件系统" Style="{StaticResource ButtonMainBlue}" Width="120" Height="50"
                     Canvas.Left="120" Canvas.Top="190" Click="JumpFileControl" />
-            
+
             <Button Content="文件管理" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="260" Canvas.Top="190" Click="JumpFileAdmin" />
-            
-            
+
+
             <Button Content="管理用户" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="260" Canvas.Top="260" Click="ToShowInfo" />
 
             <Button Content="系统日志" Style="{StaticResource ButtonMainPurple}" Width="120" Height="50"
                     Canvas.Left="120" Canvas.Top="260" Click="ToShowDaily" />
-            
+
             <Button Content="找回密码" Style="{StaticResource ButtonMainGreen}" Width="120" Height="50"
                     Canvas.Left="120" Canvas.Top="330" Click="ToRevertPass" />
 

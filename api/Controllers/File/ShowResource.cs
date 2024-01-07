@@ -1,10 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Data;
+using Microsoft.AspNetCore.Mvc;
 using server.Controllers.File;
+using MySql.Data.MySqlClient;
 
 namespace server.Controllers;
 
 public partial class Api
 {
+    private readonly IConfiguration _configuration;
+
+    public Api(IConfiguration configuration)
+    {
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+    }
+
+
+    // 注入 IConfiguration
+
+
     [HttpPost("File/ShowFile")]
     public IActionResult ShowFile([FromBody] FileAccessRequest request)
     {
@@ -41,33 +54,93 @@ public partial class Api
             }
 
             // 如果 action 3，获取关联表信息，以拥有 6 权限 ID 的文件为筛选条件
+            // if (request.Action == 3)
+            // {
+            //     // 获取当前用户 ID
+            //     var currentUser = DbContext.User.FirstOrDefault(u => u.Account == request.UserName);
+            //     if (currentUser != null)
+            //     {
+            //         int currentUserId = currentUser.ID;
+            //
+            //         // 执行查询
+            //         var result = (from urp in DbContext.UserResourcePermission
+            //             where urp.ResourceID == DbContext.UserResourcePermission
+            //                       .Where(inner => inner.UserID == currentUserId && inner.PermissionID == 6)
+            //                       .Select(inner => inner.ResourceID)
+            //                       .FirstOrDefault()
+            //                   && urp.UserID != currentUserId
+            //             join u in DbContext.User on urp.UserID equals u.ID
+            //             join r in DbContext.Resource on urp.ResourceID equals r.ID
+            //             join p in DbContext.Permission on urp.PermissionID equals p.ID
+            //             select new { u.Account, r.FileName, p.PermissionCode }).ToList();
+            //
+            //
+            //         TypeLog(request.UserName, "ShowFile", true, $"Name:{request.UserName}",
+            //             true, "action3.");
+            //         return Ok(result);
+            //     }
+            // }
+            // 如果 action 3，获取关联表信息，以拥有 6 权限 ID 的文件为筛选条件
             if (request.Action == 3)
             {
-                // 获取当前用户 ID
-                var currentUser = DbContext.User.FirstOrDefault(u => u.Account == request.UserName);
-                if (currentUser != null)
+                try
                 {
-                    int currentUserId = currentUser.ID;
+                    // 创建 MySQL 连接
+                    using (MySqlConnection connection = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                    {
+                        connection.Open();
 
-                    // 执行查询
-                    var result = (from urp in DbContext.UserResourcePermission
-                        where urp.ResourceID == (from inner in DbContext.UserResourcePermission
-                            where inner.UserID == currentUserId && inner.PermissionID == 6
-                            select inner.ResourceID).FirstOrDefault() && urp.UserID != currentUserId
-                        join u in DbContext.User on urp.UserID equals u.ID
-                        join r in DbContext.Resource on urp.ResourceID equals r.ID
-                        join p in DbContext.Permission on urp.PermissionID equals p.ID
-                        select new { u.Account, r.FileName, p.PermissionCode }).ToList();
+                        // 创建 MySQL 命令
+                        using (MySqlCommand command = new MySqlCommand())
+                        {
+                            command.Connection = connection;
+                            command.CommandType = CommandType.Text;
+                            command.CommandText = @"
+                            SELECT u.Account, r.FileName, p.PermissionCode
+                            FROM userresourcepermission urp
+                            JOIN user u ON urp.UserID = u.ID
+                            JOIN resource r ON urp.ResourceID = r.ID
+                            JOIN permission p ON urp.PermissionID = p.ID
+                            WHERE urp.ResourceID in (
+                                SELECT ResourceID
+                                FROM userresourcepermission
+                                WHERE UserID = @UserId AND PermissionID = 6
+                            ) AND urp.UserID != @UserId";
 
-                    TypeLog(request.UserName, "ShowFile", true, $"Name:{request.UserName}",
-                        true, "action3.");
-                    return Ok(result);
+                            // 设置参数
+                            command.Parameters.AddWithValue("@UserId", user.ID);
+
+                            // 执行查询
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                List<object> result = new List<object>();
+                                while (reader.Read())
+                                {
+                                    result.Add(new
+                                    {
+                                        Account = reader["Account"].ToString(),
+                                        FileName = reader["FileName"].ToString(),
+                                        PermissionCode = int.Parse(reader["PermissionCode"].ToString())
+                                    });
+                                }
+
+                                return Ok(result);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TypeLog(request.UserName, "ShowFile", true, $"Name:{request.UserName}", false,
+                        $"Error show file: {ex.Message}");
+                    return StatusCode(500, $"Error show file: {ex.Message}");
                 }
             }
 
+
             // 展示最基础的用户列表
             if (request.Action == 4)
-                fileInfo = DbContext.User.Select(i => i.Account).ToList();  
+                fileInfo = DbContext.User.Select(i => i.Account).ToList();
 
 
             bool successful = fileInfo is { Count: > 0 };

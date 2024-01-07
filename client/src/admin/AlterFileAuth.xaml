@@ -65,12 +65,12 @@
             </DataGrid>
         </Grid>
 
-        <!-- 用户列表下拉框 -->
+        <!-- 文件列表下拉框 -->
         <ComboBox x:Name="FileComboBox" Width="200" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left"
                   Margin="10,400,10,10">
         </ComboBox>
 
-        <!-- 文件列表下拉框 -->
+        <!-- 用户列表下拉框 -->
         <ComboBox x:Name="UserComboBox" Width="200" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left"
                   Margin="250,400,10,10">
         </ComboBox>
@@ -80,13 +80,15 @@
         <Button Content="刷新页面" Style="{StaticResource ButtonMainGreen}" Width="140" Height="50"
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,10,230" Click="Button_FlushAll" />
         <Button Content="删除权限" Style="{StaticResource ButtonMainGreen}" Width="140" Height="50"
-                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="250,0,10,230" />
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="250,0,10,230"
+                Click="Button_DeletePermission" />
 
         <Button Content="增加读权限" Style="{StaticResource ButtonMainPurple}" Width="140" Height="50"
-                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,130" />
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,130"
+                Click="Button_AddReadPermission" />
 
         <Button Content="增加写权限" Style="{StaticResource ButtonMainPurple}" Width="140" Height="50"
-                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,30" />
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="490,0,10,30" Click="Button_AddWritePermission" />
 
     </Grid>
 </Window>
