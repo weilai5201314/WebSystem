@@ -87,5 +87,13 @@ namespace client
             newWindow.Closed += (sender, e) => { IsEnabled = true; };
             newWindow.Show();
         }
+
+        private void ToShowFile(object sender, RoutedEventArgs e)
+        {
+            ShowFile newWindow = new ShowFile();
+            IsEnabled = false;
+            newWindow.Closed += (sender, e) => { IsEnabled = true; };
+            newWindow.Show();
+        }
     }
 }

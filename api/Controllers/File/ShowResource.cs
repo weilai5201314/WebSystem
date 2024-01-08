@@ -39,7 +39,12 @@ public partial class Api
             List<string>? fileInfo = null;
             //  如果  action 1,则直接获取所有文件列表
             if (request.Action == 1)
+            {
+                if(this.CheckAdmin3(user.ID))
+                    return Unauthorized("You are admin.");
                 fileInfo = DbContext.Resource.Select(u => u.FileName).ToList();
+
+            }
             //  如果  action 2,则根据用户ID来获取权限为 4 的文件名
             if (request.Action == 2)
             {
@@ -54,39 +59,15 @@ public partial class Api
             }
 
             // 如果 action 3，获取关联表信息，以拥有 6 权限 ID 的文件为筛选条件
-            // if (request.Action == 3)
-            // {
-            //     // 获取当前用户 ID
-            //     var currentUser = DbContext.User.FirstOrDefault(u => u.Account == request.UserName);
-            //     if (currentUser != null)
-            //     {
-            //         int currentUserId = currentUser.ID;
-            //
-            //         // 执行查询
-            //         var result = (from urp in DbContext.UserResourcePermission
-            //             where urp.ResourceID == DbContext.UserResourcePermission
-            //                       .Where(inner => inner.UserID == currentUserId && inner.PermissionID == 6)
-            //                       .Select(inner => inner.ResourceID)
-            //                       .FirstOrDefault()
-            //                   && urp.UserID != currentUserId
-            //             join u in DbContext.User on urp.UserID equals u.ID
-            //             join r in DbContext.Resource on urp.ResourceID equals r.ID
-            //             join p in DbContext.Permission on urp.PermissionID equals p.ID
-            //             select new { u.Account, r.FileName, p.PermissionCode }).ToList();
-            //
-            //
-            //         TypeLog(request.UserName, "ShowFile", true, $"Name:{request.UserName}",
-            //             true, "action3.");
-            //         return Ok(result);
-            //     }
-            // }
-            // 如果 action 3，获取关联表信息，以拥有 6 权限 ID 的文件为筛选条件
             if (request.Action == 3)
             {
+                if(this.CheckAdmin3(user.ID))
+                    return Unauthorized("You are admin.");
                 try
                 {
                     // 创建 MySQL 连接
-                    using (MySqlConnection connection = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                    using (MySqlConnection connection =
+                           new MySqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                     {
                         connection.Open();
 
@@ -136,11 +117,92 @@ public partial class Api
                     return StatusCode(500, $"Error show file: {ex.Message}");
                 }
             }
-
-
-            // 展示最基础的用户列表
+            
+            // 展示最基础的用户列表,不展示管理员
+            // 展示最基础的用户列表，不展示管理员
+            // 展示最基础的用户列表，不展示管理员
             if (request.Action == 4)
-                fileInfo = DbContext.User.Select(i => i.Account).ToList();
+            {
+                fileInfo = DbContext.User
+                    .Where(u => !DbContext.UserUsergroup.Any(ug => ug.UserID == u.ID && ug.UserGroupID == 3))
+                    .Select(i => i.Account)
+                    .ToList();
+            }
+
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // admin部分
+            if (request.Action == 5)
+            {
+                // 如果有管理员身份，可直接获取 权限关联表 所有信息
+                if (CheckAdmin3(user.ID))
+                {
+                    try
+                    {
+                        // 创建 MySQL 连接
+                        using (MySqlConnection connection =
+                               new MySqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                        {
+                            connection.Open();
+
+                            // 创建 MySQL 命令
+                            using (MySqlCommand command = new MySqlCommand())
+                            {
+                                command.Connection = connection;
+                                command.CommandType = CommandType.Text;
+                                command.CommandText = """
+                                                      
+                                                                                  SELECT u.Account, r.FileName, p.PermissionCode
+                                                                                  FROM userresourcepermission urp
+                                                                                  JOIN user u ON urp.UserID = u.ID
+                                                                                  JOIN resource r ON urp.ResourceID = r.ID
+                                                                                  JOIN permission p ON urp.PermissionID = p.ID
+                                                                                  where urp.PermissionID!=6
+                                                                                  
+                                                      """;
+
+                                // 设置参数
+                                // command.Parameters.AddWithValue("@UserId", user.ID);
+
+                                // 执行查询
+                                using (MySqlDataReader reader = command.ExecuteReader())
+                                {
+                                    List<object> result = new List<object>();
+                                    while (reader.Read())
+                                    {
+                                        result.Add(new
+                                        {
+                                            Account = reader["Account"].ToString(),
+                                            FileName = reader["FileName"].ToString(),
+                                            PermissionCode = int.Parse(reader["PermissionCode"].ToString())
+                                        });
+                                    }
+
+                                    return Ok(result);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TypeLog(request.UserName, "ShowFile", true, $"Name:{request.UserName}", false,
+                            $"Error show file: {ex.Message}");
+                        return StatusCode(500, $"Error show file: {ex.Message}");
+                    }
+                }
+
+                return Unauthorized("Can't find your identity.");
+            }
+
+            if (request.Action == 6)
+            {
+                if (CheckAdmin3(user.ID))
+                    fileInfo = DbContext.Resource.Select(u => u.FileName).ToList();
+                else
+                    return Unauthorized("Can't find your identity.");
+            }
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
             bool successful = fileInfo is { Count: > 0 };
@@ -155,6 +217,25 @@ public partial class Api
             TypeLog(request.UserName, "ShowFile", true, $"Name:{request.UserName}",
                 false, $"Error show file: {ex.Message}");
             return StatusCode(500, $"Error show file: {ex.Message}");
+        }
+
+
+        bool CheckAdmin3(int userId)
+        {
+            // 在这里查询数据库以验证用户的身份
+            // 假设 UserUserGroup 表包含用户的身份信息
+            var UserUserGroupId = DbContext.UserUsergroup.Where(ug => ug.UserID == userId);
+
+            foreach (var user in UserUserGroupId)
+            {
+                // 身份ID为 3 表示有效的身份
+                if (user.UserGroupID == 3)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

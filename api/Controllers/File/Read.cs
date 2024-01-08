@@ -21,6 +21,7 @@ public partial class Api
                     "Invalid username");
                 return BadRequest("Invalid username");
             }
+
             // 验证文件名是否已存在
             if (!FileExists(request.ObjectName1))
             {
@@ -28,6 +29,7 @@ public partial class Api
                     "File already exists");
                 return Ok($"File '{request.ObjectName1}' isn't exists");
             }
+
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //---------------------------------------------------自主访问控制---------------------------------------------------//
             //  判断用户能否读此文件，只有 1 读权限 或者 4 拥有权限 才能读取文件
@@ -62,6 +64,8 @@ public partial class Api
     // 用户   文件  权限
     private bool HasPermission(int userId, string fileName, int permissionCode)
     {
+        if (CheckAdmin3(userId))
+            return true;
         // 查询指定文件的指定权限ID
         int permissionId = DbContext.Permission
             .Where(p => p.PermissionCode == permissionCode)

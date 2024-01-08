@@ -17,11 +17,11 @@ namespace client.file
             InitializeComponent();
 
             // 初始化 ComboBox
-            InitializeFileComboBox();
+            InitializeFileComboBox(this);
         }
 
         //  初始化下拉框
-        private async void InitializeFileComboBox()
+        private async void InitializeFileComboBox(Window currentWindow)
         {
             try
             {
@@ -57,11 +57,13 @@ namespace client.file
                 else
                 {
                     MessageBox.Show("Error initializing file list.");
+                    currentWindow.Close(); // 关闭窗口
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error initializing file list: {ex.Message}");
+                currentWindow.Close(); // 关闭窗口
             }
         }
 

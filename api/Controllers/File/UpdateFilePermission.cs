@@ -44,6 +44,7 @@ public partial class Api
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //---------------------------------------------------自主访问控制---------------------------------------------------//
             // 判断用户是否是文件拥有者，否则不能进行修改,4 权限为拥有权
+            // 管理员在此判断处直接通过
             if (HasPermission(user.ID, request.FileName, 4))
             {
                 // 根据请求action判断是增加还是删除权限,根据permission判断哪个权限
@@ -96,6 +97,7 @@ public partial class Api
                 return false;
             }
 
+
             // 在关联表中删除Owner权限记录
             var existingFilePermission = DbContext.UserResourcePermission
                 .FirstOrDefault(urp => urp.UserID == ownerId
@@ -124,5 +126,23 @@ public partial class Api
                 false, $"{ex.Message}");
             return false;
         }
+    }
+
+    bool CheckAdmin3(int userId)
+    {
+        // 在这里查询数据库以验证用户的身份
+        // 假设 UserUserGroup 表包含用户的身份信息
+        var UserUserGroupId = DbContext.UserUsergroup.Where(ug => ug.UserID == userId);
+
+        foreach (var user in UserUserGroupId)
+        {
+            // 身份ID为 3 表示有效的身份
+            if (user.UserGroupID == 3)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
