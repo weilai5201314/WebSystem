@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\zzz\school\InfoSecurity\WebSystem\client\obj\Debug\net7.0-windows\
+D:\zzz\websystem\client\obj\Debug\net7.0-windows\
 client
 none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
-D:\zzz\school\InfoSecurity\WebSystem\client\App.xaml
+D:\zzz\websystem\client\App.xaml
 10788546993
 
 14676122864
-199-144125273
+199830110076
 src\admin\ShowDaily.xaml;src\admin\ShowFile.xaml;src\admin\ShowInfo.xaml;src\file\AlterFileAuth.xaml;src\file\CustomInputWindow.xaml;src\file\fileControl.xaml;src\MainWindow.xaml;src\user\LogIn.xaml;src\user\RevertPass.xaml;src\user\SignUp.xaml;
 
 False

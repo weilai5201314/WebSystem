@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj": {}
+    "D:\\zzz\\websystem\\client\\client.csproj": {}
   },
   "projects": {
-    "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj": {
+    "D:\\zzz\\websystem\\client\\client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj",
+        "projectUniqueName": "D:\\zzz\\websystem\\client\\client.csproj",
         "projectName": "client",
-        "projectPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\client.csproj",
+        "projectPath": "D:\\zzz\\websystem\\client\\client.csproj",
         "packagesPath": "C:\\Users\\w2001\\.nuget\\packages\\",
-        "outputPath": "D:\\zzz\\school\\InfoSecurity\\WebSystem\\client\\obj\\",
+        "outputPath": "D:\\zzz\\websystem\\client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Dependence\\Visual_Studio\\Shared\\NuGetPackages"
+          "D:\\Dependence\\visual_studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\w2001\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -69,7 +69,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

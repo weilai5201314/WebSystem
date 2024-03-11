@@ -14,7 +14,9 @@
     public class User
     {
         public int ID { get; set; }
+        // public string Account { get; set; }
         public string Account { get; set; }
+
         public byte[] Pass { get; set; } // 存储哈希密码
         public byte[] Salt { get; set; } // 存储盐值
         public int Status { get; set; } // 用户状态

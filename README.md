@@ -29,4 +29,115 @@
 - 第一次构建webapi，很多地方没考虑到。
 - 前后端的接口编写有待提高。
 
+
+**4.mysql创建语句**
+```mysql
+CREATE DATABASE IF NOT EXISTS `websystem`;
+
+USE `websystem`;
+
+-- 用户表
+CREATE TABLE IF NOT EXISTS `User`
+(
+  `ID`         INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Account`    VARCHAR(255) NOT NULL,
+  `Pass`       BINARY(64)   NOT NULL, -- 哈希密码，假设使用 SHA-256，长度为 64 字节
+  `Salt`       BINARY(16)   NOT NULL, -- 盐值，假设长度为 16 字节
+  `Status`     INT          NOT NULL,
+  `RevertPass` BINARY(64),            -- 逆转哈希密码，假设使用 SHA-256，长度为 64 字节
+  `N`          INT,                   -- 迭代次数
+  `R`          BINARY(16),            -- 随机数，假设长度为 16 字节
+  `N2`         INT,                   -- 迭代次数2
+  `R2`         BINARY(16)             -- 随机数2，假设长度为 16 字节
+);
+
+-- 用户组表
+CREATE TABLE IF NOT EXISTS `UserGroup`
+(
+  `ID`          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Name`        VARCHAR(255) NOT NULL,
+  `Description` VARCHAR(255)
+);
+
+-- 用户-用户组关联表
+CREATE TABLE IF NOT EXISTS `UserUsergroup`
+(
+  `ID`          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `UserID`      INT NOT NULL,
+  `UserGroupID` INT NOT NULL,
+  FOREIGN KEY (`UserID`) REFERENCES `User` (`ID`),
+  FOREIGN KEY (`UserGroupID`) REFERENCES `UserGroup` (`ID`)
+);
+
+-- 日志表
+CREATE TABLE IF NOT EXISTS `Log`
+(
+  `ID`           INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Timestamp`    DATETIME     NOT NULL,
+  `User`         VARCHAR(255) NOT NULL,
+  `Action`       VARCHAR(255) NOT NULL,
+  `InputResult`  BOOLEAN      NOT NULL,
+  `InputValue`   VARCHAR(255),
+  `ReturnResult` BOOLEAN      NOT NULL,
+  `ReturnValue`  VARCHAR(255)
+);
+
+-- 资源表
+CREATE TABLE IF NOT EXISTS `Resource`
+(
+  `ID`       INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `FileName` VARCHAR(255) NOT NULL
+);
+
+-- 权限表
+CREATE TABLE IF NOT EXISTS `Permission`
+(
+  `ID`                    INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `PermissionCode`        INT NOT NULL,
+  `PermissionDescription` VARCHAR(255)
+);
+
+-- 用户-资源-权限关联表
+CREATE TABLE IF NOT EXISTS `UserResourcePermission`
+(
+  `ID`           INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `UserID`       INT NOT NULL,
+  `ResourceID`   INT NOT NULL,
+  `PermissionID` INT NOT NULL,
+  FOREIGN KEY (`UserID`) REFERENCES `User` (`ID`),
+  FOREIGN KEY (`ResourceID`) REFERENCES `Resource` (`ID`),
+  FOREIGN KEY (`PermissionID`) REFERENCES `Permission` (`ID`)
+);
+
+alter table user
+  modify Account varchar(256) not null;
+
+alter table user
+  modify Pass varchar(256) not null;
+
+alter table user
+  modify Salt varchar(256) not null;
+
+alter table user
+  modify RevertPass varchar(256) null;
+alter table user
+  modify R binary(32) null;
+
+alter table user
+  modify R2 binary(32) null;
+
+alter table user
+  modify Pass varbinary(256) not null;
+
+alter table user
+  modify Salt varbinary(256) not null;
+
+alter table user
+  modify RevertPass varbinary(256) null;
+
+
+
+
+```
+
 不过将后端api写好之后，再写前端直接调用api还是很爽的。
