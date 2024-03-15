@@ -15,7 +15,7 @@ namespace server.Controllers
             var user = DbContext.user2.FirstOrDefault(
                 u => u.username == request.username && u.password == request.password);
             if (user == null)
-                return Ok("账号或密码错误");
+                return BadRequest("账号或密码错误");
             return Ok("SignUp successful");
         }
     }
