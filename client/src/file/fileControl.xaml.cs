@@ -299,7 +299,7 @@ namespace client.file
             return null;
         }
 
-        private async Task<bool> WriteFile(string fileName, string text)
+        private Task<bool> WriteFile(string fileName, string text)
         {
             try
             {
@@ -315,12 +315,12 @@ namespace client.file
                 // 发起请求，处理返回结果
                 var response = PostRequest("http://localhost:5009/Api/File/CoverFile", requestData);
                 if (response.IsSuccessStatusCode)
-                    return true;
-                return false;
+                    return Task.FromResult(true);
+                return Task.FromResult(false);
             }
             catch (Exception ex)
             {
-                return false;
+                return Task.FromResult(false);
             }
         }
 

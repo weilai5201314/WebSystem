@@ -5,8 +5,9 @@ namespace client.file;
 public partial class CustomInputWindow : Window
 {
     public string UserInput { get; private set; }
-    public CustomInputWindow(string currentContent)
+    public CustomInputWindow(string currentContent, string userInput)
     {
+        UserInput = userInput;
         InitializeComponent();
         CurrentContentTextBlock.Text = currentContent;
     }
